@@ -17,8 +17,7 @@
 #define MESSAGE_TYPE_MODIFY 2
 #define MESSAGE_TYPE_ACQUIRE 3
 #define MESSAGE_TYPE_RELEASE 4
-#define MESSAGE_TYPE_PRINT 5
-#define MESSAGE_TYPE_QUERY 6
+#define MESSAGE_TYPE_QUERY 5
 //----------------------------
 #define QUERY_BY_NAME 1
 #define QUERY_BY_SALARY 2
@@ -79,7 +78,6 @@ void respondToAdd(char* name, int salary, int lastKey); //implemented
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue); //implemented
 void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
 void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
-void respondToQuery(int queryType, int searchedSalary, char* searchedString);
 //----------------------------
 /*DB Client functions*/
 void requestToAdd(char* name, int salary);
@@ -89,6 +87,8 @@ void requestToRelease(int key);
 void requestToQuery(int queryType, int searchedSalary, char* searchedString);
 //----------------------------
 /*logging functions*/
+//comment for ahmed yehia alter the parameters to suit you logic
+void sendQueryLog();
 void sendLog(int OrderOfSendingProcess, char* logString, int loggerPID);
 void writeLog(char* logString);
 //----------------------------
