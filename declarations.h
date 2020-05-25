@@ -6,6 +6,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include<signal.h>
+#include <sys/shm.h> 
+#include <sys/wait.h>
+//----------------------------
+#define NUMBER_OF_PROCESS 6
+#define NUMBER_OF_CLIENTS 3
+#define DBMANAGER_INDEX 0
+#define QUERY_LOGGER_INDEX 1
+#define LOGGER_INDEX 2
+#define LOGGER_SHAREDMEMORY_SIZE 1024
+#define DBMANAGER_SHAREDMEMORY_SIZE 1024
 //----------------------------
 #define ROLE_DB_MANAGER 1
 #define ROLE_DB_CLIENT 2
@@ -28,6 +38,12 @@
 #define SEMAPHORE_OCCUPIED 0
 #define SEMAPHORE_AVAILABLE 1
 //----------------------------
+/*Global Variables*/
+key_t msgqid;
+int LoggerSharedMemoryId=-1;
+int DBSharedMemoryId=-1;
+int processesIds[NUMBER_OF_PROCESS]={-1};
+//----------------------------
 /*System info*/
 struct message
 {
@@ -42,6 +58,18 @@ struct message
     char* searchedString;
     char* logString;
 };
+
+struct parentMsgBuff
+{
+   long mtype;
+   char * role;
+   int DBManagerId;
+   int LoggerId;
+   int QueryLoggerId;
+   int sharedMemoryId;
+   
+};
+
 struct DBrecord
 {
     int key;
@@ -69,8 +97,10 @@ void handlingSIGUSR1_and_IgnoringSigStop(); //implemented
 //----------------------------
 /*Parent functions*/
 int* readConfiguartions(); 
-void forkAllChildren(int* configurations);
-void initializeSharedRecources();
+pid_t forkAllChildren(int* configurations); //implemented
+void initializeSharedRecources(); //implemented
+void roleIdentification();  //implemented
+void do_child(); //base implemented
 //----------------------------
 /*DB Manager functions*/
 void respondToRequests();
