@@ -1,6 +1,6 @@
 #include "includes.h"
+
 //----------------------------
-#define MAXCHAR 1000
 #define ADD_MODIFICATION 1
 #define SUBTRACT_MODIFICATION -1
 //----------------------------
@@ -15,7 +15,7 @@ char* filename;
 char word [MAXCHAR];
 
 int send_val;
-struct message message;
+struct message messageClient;
 //----------------------------
 /*DB Client functions*/
 void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived);
@@ -28,3 +28,4 @@ void requestToAcquire(int key);
 void requestToRelease(int key);
 void requestToQuery(int queryType, int searchedSalary, char* searchedString);
 //----------------------------
+void handlingSIGUSR1_and_IgnoringSigStop(); //implemented

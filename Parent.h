@@ -25,6 +25,20 @@ struct parentMsgBuff
    int clientDBManagerMsgQId;
    int clientNumber;
 };
+struct message
+{
+    long mtype;
+    int destinationProcess;
+    int key;
+    char name[MAXCHAR];
+    int salary;
+    int modification;
+    int callingProcessID;
+    int queryType;
+    int searchedSalary;
+    char* searchedString;
+    char* logString;
+};
 //----------------------------
 /*Parent functions*/
 int* readConfiguartions(); 

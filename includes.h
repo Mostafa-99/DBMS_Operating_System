@@ -22,17 +22,5 @@
 //----------------------------
 /*System info*/
 int messageQueueID;
-struct message
-{
-    long mtype;
-    int destinationProcess;
-    int key;
-    char* name;
-    int salary;
-    int modification;
-    int callingProcessID;
-    int queryType;
-    int searchedSalary;
-    char* searchedString;
-    char* logString;
-};
+
+#define MAXCHAR 1000

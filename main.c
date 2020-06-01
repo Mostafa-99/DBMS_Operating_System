@@ -48,11 +48,11 @@ void do_child()
         //printf("Role Message received I am child: %d and I am %s \n",getpid(),message.role);
         if(message.role=="DBManager")
         {
-            //do_DBManager();
+            do_DBManager(message.sharedMemoryId,message.clientDBManagerMsgQId);
         }
         else if(message.role=="QueryLogger")
         {
-            //do_QueryLogger;
+            //do_QueryLogger();
         }
         else if(message.role=="Logger")
         {
