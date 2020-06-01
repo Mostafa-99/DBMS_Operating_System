@@ -17,6 +17,7 @@
 #define LOGGER_SHAREDMEMORY_SIZE 1024
 #define DBMANAGER_SHAREDMEMORY_SIZE 1024
 //----------------------------
+// needed?
 #define ROLE_DB_MANAGER 1
 #define ROLE_DB_CLIENT 2
 #define ROLE_LOGGER 3

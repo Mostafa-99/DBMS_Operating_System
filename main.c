@@ -1,4 +1,9 @@
-#include "declarations.c"
+//#include "declarations.c"
+#include "Parent.c"
+#include "DBManager.c"
+#include "Client.c"
+
+void do_child(); //base implemented
 
 void main()
 {   //readConfiguartions();
@@ -24,5 +29,38 @@ void main()
         sleep(1);
         do_child();
         //printf("I'm new child my pid: %d and my parent pid: %d\n",getpid(),getppid());
+    }
+}
+
+void do_child()
+{
+    int rec_val;
+    struct parentMsgBuff message; 
+    /* receive all types of messages */
+    rec_val = msgrcv(msgqid, &message, sizeof(message)-sizeof(message.mtype), getpid(), !IPC_NOWAIT);  
+    
+    if(rec_val == -1)
+    {
+        perror("Error in receive");
+    }
+    else
+    {
+        //printf("Role Message received I am child: %d and I am %s \n",getpid(),message.role);
+        if(message.role=="DBManager")
+        {
+            //do_DBManager();
+        }
+        else if(message.role=="QueryLogger")
+        {
+            //do_QueryLogger;
+        }
+        else if(message.role=="Logger")
+        {
+            //do_Logger();
+        }
+        else
+        {
+            do_client(message.DBManagerId,message.QueryLoggerId,message.sharedMemoryId,message.clientDBManagerMsgQId, message.clientNumber);
+        } 
     }
 }
