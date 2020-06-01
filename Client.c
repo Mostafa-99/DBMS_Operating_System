@@ -59,6 +59,7 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
 }
 void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived)
 {
+    /*Note: add the message queue ID*/
     DBManagerId=DBManagerIdReceived;
     QueryLoggerId=QueryLoggerIdReceived;
     sharedMemoryId=sharedMemoryIdReceived;
@@ -91,6 +92,7 @@ char * readConfigurationFile()
     }
 }
 
+/*Note: send the message in all the request functions*/
 void requestToAdd(char* name, int salary)
 {
     printf("I am child: %d and I am client number: %d, I require to add %s with salary %d \n",getpid(),clientNumber,name,salary);

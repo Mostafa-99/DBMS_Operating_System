@@ -21,6 +21,7 @@
 #define QUERY_HYBRID 3
 //----------------------------
 /*System info*/
+int messageQueueID;
 struct message
 {
     long mtype;
@@ -29,7 +30,7 @@ struct message
     char* name;
     int salary;
     int modification;
-
+    int callingProcessID;
     int queryType;
     int searchedSalary;
     char* searchedString;

@@ -41,14 +41,13 @@ void handlingSIGUSR1_and_IgnoringSigStop()
 {
     signal(SIGSTOP, SIG_IGN);
 }
-//----------------------------------------------------------------
-/*DB Manager*/
-void respondToAdd(char* name, int salary, int lastKey)
+int respondToAdd(char* name, int salary, int lastKey)
 {
     struct DBrecord newRecord;
     newRecord.name = name;
     newRecord.salary = salary;
     newRecord.key = lastKey+1;
+    return lastKey+1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
 {
@@ -80,4 +79,28 @@ void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOf
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
     kill(releasedProcessPID,SIGCONT);
 }
-//----------------------------------------------------------------
+void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived){
+    messageQueueID=messageQueueIdReceived;
+    DBManagerPID = getpid();
+    sharedMemoryId = sharedMemoryIdReceived;
+}
+void mainFunctionDBManager(){
+    msgrcv(messageQueueID, &receivedMessage,(sizeof(struct message) - sizeof(receivedMessage.mtype)),DBManagerPID,!IPC_NOWAIT);
+    int messageType = receivedMessage.mtype;
+    if(messageType == MESSAGE_TYPE_ADD) {
+        lastKey = respondToAdd(receivedMessage.name,receivedMessage.salary,lastKey);
+        pointersOfWaitingQueuesForRecordKeys[lastKey] = createWaitingQueue();
+    }
+    else if (messageType == MESSAGE_TYPE_MODIFY) {
+        respondToModify(receivedMessage.key, receivedMessage.modification);
+    }
+    else if (messageType == MESSAGE_TYPE_ACQUIRE) {
+        respondToAcquire(receivedMessage.key, receivedMessage.callingProcessID, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
+    }
+    else if (messageType == MESSAGE_TYPE_RELEASE) {
+        respondToRelease(receivedMessage.key, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
+    }
+    else if (messageType == MESSAGE_TYPE_QUERY) {
+        /*will be implemented during the online meeting*/
+    }
+}

@@ -5,6 +5,11 @@
 #define SEMAPHORE_OCCUPIED 0
 #define SEMAPHORE_AVAILABLE 1
 //----------------------------
+long int DBManagerPID;
+struct message receivedMessage;
+int sharedMemoryId;
+int lastKey=-1;
+struct waitingQueue *pointersOfWaitingQueuesForRecordKeys[MAX_NUMBER_OF_RECORDS];
 struct DBrecord
 {
     int key;
@@ -37,4 +42,6 @@ void respondToAdd(char* name, int salary, int lastKey); //implemented
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue); //implemented
 void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
 void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
+void respondToQuery(); /*will be implemented during the online meeting*/
+void mainFunctionDBManager();
 //----------------------------
