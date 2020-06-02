@@ -85,6 +85,79 @@ void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOf
     printf("released \n");
     kill(releasedProcessPID,SIGCONT);
 }
+void respondToQuery(int queryType, int searchedSalary, char searchedName[]) {
+    if(lastKey+1>0) {
+        int returnedKeysFromSearch[lastKey+1];
+        int notReturnedKey = -1;
+        int checkedRecordIndex=0;
+        int returnedKeyIndex=0;
+        memset(DBsemaphores, notReturnedKey, lastKey+1);
+        if(queryType == QUERY_BY_FULL_TABLE) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                returnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+            }
+        }
+        else if(queryType == QUERY_BY_EXACT_NAME) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].name == searchedName){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType == QUERY_BY_PART_OF_NAME) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(strlen(DBtable[checkedRecordIndex].name) >= strlen(searchedName)){
+                    int checkedChar = 0;
+                    for(;checkedChar<strlen(searchedName)&&(DBtable[checkedRecordIndex].name[checkedChar]==searchedName[checkedChar]);checkedChar++);
+                    if(checkedChar==strlen(searchedName))rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_EXACT_SALARY) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary == searchedSalary){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_LESS_THAN_SALARY) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary < searchedSalary){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_GREATER_THAN_SALARY) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary > searchedSalary){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_LESS_THAN_OR_EQUAL_SALARY) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary <= searchedSalary){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY) {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary >= searchedSalary){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+        else if(queryType==QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID)
+        {
+            for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                if(DBtable[checkedRecordIndex].salary == searchedSalary && DBtable[checkedRecordIndex].name == searchedName){
+                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                }
+            }
+        }
+    }
+}
 void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived){
     messageQueueID=messageQueueIdReceived;
     DBManagerPID = getpid();
@@ -113,7 +186,7 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
             respondToRelease(receivedMessage.key, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
         }
         else if (messageType == MESSAGE_TYPE_QUERY) {
-            /*will be implemented during the online meeting*/
+            respondToQuery(receivedMessage.queryType, receivedMessage.searchedSalary, receivedMessage.searchedString);
         }
     }
 }

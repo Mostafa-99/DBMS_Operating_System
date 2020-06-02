@@ -37,7 +37,7 @@ struct parentMsgBuff
 struct message
 {
     long mtype;
-    int destinationProcess;
+    int destinationProcess; //to be changed
     int key;
     char name[MAXCHAR];
     int salary;

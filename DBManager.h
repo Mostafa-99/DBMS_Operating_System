@@ -35,7 +35,7 @@ int respondToAdd(char* name, int salary, int lastKey); //implemented
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue); //implemented
 void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
 void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
-void respondToQuery(); /*will be implemented during the online meeting*/
+void respondToQuery(int queryType, int searchedSalary, char* searchedName);
 void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,int DBSharedMemoryIdReceived);
 void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived);
 //----------------------------

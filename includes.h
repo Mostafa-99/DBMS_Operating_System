@@ -16,9 +16,15 @@
 #define MESSAGE_TYPE_RELEASE 4
 #define MESSAGE_TYPE_QUERY 5
 //----------------------------
-#define QUERY_BY_NAME 1
-#define QUERY_BY_SALARY 2
-#define QUERY_HYBRID 3
+#define QUERY_BY_FULL_TABLE 0
+#define QUERY_BY_EXACT_NAME 1
+#define QUERY_BY_PART_OF_NAME 2
+#define QUERY_BY_EXACT_SALARY 3
+#define QUERY_BY_GREATER_THAN_SALARY 4
+#define QUERY_BY_LESS_THAN_SALARY 5
+#define QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY 6
+#define QUERY_BY_LESS_THAN_OR_EQUAL_SALARY 7
+#define QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID 8
 //----------------------------
 /*System info*/
 int messageQueueID;
