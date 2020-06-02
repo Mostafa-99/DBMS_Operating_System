@@ -31,7 +31,7 @@ pid_t forkAllChildren(int* configurations)
 void initializeSharedRecources()
 {   
     LoggerSharedMemoryId = shmget(IPC_PRIVATE,LOGGER_SHAREDMEMORY_SIZE,0666|IPC_CREAT);
-    DBSharedMemoryId = shmget(IPC_PRIVATE,DBMANAGER_SHAREDMEMORY_SIZE,0666|IPC_CREAT);
+    DBSharedMemoryId = shmget(IPC_PRIVATE,MAX_NUMBER_OF_RECORDS*sizeof(struct DBrecord),0666|IPC_CREAT);
    // printf("I'm parent I created the resources: %d  and  %d\n",LoggerSharedMemoryId,DBSharedMemoryId);
 }
 void roleIdentification()
@@ -48,6 +48,7 @@ void roleIdentification()
             message.role="DBManager";
             message.sharedMemoryId=LoggerSharedMemoryId;
             message.clientDBManagerMsgQId=clientDBManager_msgqid;
+            message.DBSharedMemoryId=DBSharedMemoryId;
         }
         else if(i==QUERY_LOGGER_INDEX) //QueryLogger
         {

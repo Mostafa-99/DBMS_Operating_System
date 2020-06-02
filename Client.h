@@ -1,6 +1,6 @@
 #include "includes.h"
+
 //----------------------------
-#define MAXCHAR 1000
 #define ADD_MODIFICATION 1
 #define SUBTRACT_MODIFICATION -1
 //----------------------------
@@ -15,11 +15,12 @@ char* filename;
 char word [MAXCHAR];
 
 int send_val;
-struct message message;
+struct message messageClient;
+struct DBrecord *DBtableView;
 //----------------------------
 /*DB Client functions*/
-void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived);
-void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived);
+void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived);
+void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived);
 void openConfigurationFile();
 char * readConfigurationFile();
 void requestToAdd(char* name, int salary);
@@ -28,3 +29,4 @@ void requestToAcquire(int key);
 void requestToRelease(int key);
 void requestToQuery(int queryType, int searchedSalary, char* searchedString);
 //----------------------------
+void handlingSIGUSR1_and_IgnoringSigStop(); //implemented

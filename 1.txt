@@ -1,6 +1,7 @@
-add ahmed 20000
-add mohamed 30000
-modify 1 + 10000
+add mohamed 20000
+add ahmed 30000
 acquire 1
-release 1
+acquire 0
+modify 0 + 10000
+modify 1 - 10000
 aaaaa
