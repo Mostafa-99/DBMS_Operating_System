@@ -29,27 +29,27 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
 {
     if(DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED)
     {
+         printf("Respond Acquire:add to queue DBmanager\n");
         addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
-       // printf("I am db manager nanannana %d \n",DBsemaphores[50]);
-
     }
     else
     {
+        printf("Respond Acquire:Semaphore available DBmanager\n");
         DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED;
-     //   printf("I am db manager wake up %d \n",CallingProccessPID);
-      /*  kill(CallingProccessPID,SIGUSR1);
-        kill(CallingProccessPID,SIGCONT);*/
+        kill(CallingProccessPID,SIGUSR1);
+        kill(CallingProccessPID,SIGCONT);
     }
 }
 void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey)
 {
+    printf("Respond to Release DBmanager\n");
     DBsemaphores[releasedRecordKey] == SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
-   // printf("released \n");
-   // kill(releasedProcessPID,SIGCONT);
+    kill(releasedProcessPID,SIGCONT);
 }
-void respondToQuery(int queryType, int searchedSalary, char searchedName[], int callingProcessID) {
+void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {
     if(lastKey+1>0) {
+        printf("Respond to Query DBmanager\n");
         struct message sendSearchResult;
         int notReturnedKey = -1;
         int checkedRecordIndex=0;
@@ -58,12 +58,16 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
         if(queryType == QUERY_BY_FULL_TABLE) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if(queryType == QUERY_BY_EXACT_NAME) {
+            if(searchedName == NULL) printf("Null\n");
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
+                printf("loop\n");
                 if(DBtable[checkedRecordIndex].name == searchedName){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -72,7 +76,10 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
                 if(strlen(DBtable[checkedRecordIndex].name) >= strlen(searchedName)){
                     int checkedChar = 0;
                     for(;checkedChar<strlen(searchedName)&&(DBtable[checkedRecordIndex].name[checkedChar]==searchedName[checkedChar]);checkedChar++);
-                    if(checkedChar==strlen(searchedName))sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    if(checkedChar==strlen(searchedName)){ 
+                        sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                        printf("return key: %d\n",checkedRecordIndex);
+                    }
                 }
             }
         }
@@ -80,6 +87,7 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary == searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -87,6 +95,7 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary < searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -94,6 +103,7 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary > searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -101,6 +111,7 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary <= searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -108,6 +119,7 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary >= searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -116,14 +128,13 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[], int 
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary == searchedSalary && DBtable[checkedRecordIndex].name == searchedName){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
+                    printf("return key: %d\n",checkedRecordIndex);
                 }
             }
         }
-
-        // note always send not only if found
         if (returnedKeyIndex>0) {
             sendSearchResult.mtype=callingProcessID;
-            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
+            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), IPC_NOWAIT);
         }
     }
     
@@ -142,7 +153,6 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
     while(1)
     {
         msgrcv(messageQueueID, &receivedMessage,(sizeof(struct message) - sizeof(receivedMessage.mtype)),DBManagerPID,!IPC_NOWAIT);
-                        printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
         int messageType = receivedMessage.destinationProcess;
         if(messageType == MESSAGE_TYPE_ADD) {
             lastKey = respondToAdd(receivedMessage.name,receivedMessage.salary,lastKey);

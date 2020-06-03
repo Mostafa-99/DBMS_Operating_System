@@ -6,12 +6,4 @@ modify 0 + 10000
 modify 1 - 10000
 release 1
 release 0
-query full
-query name startswith a
 query name exact ahmed
-query salary exact 300000
-query salary > 1000
-query salary < 10000
-query salary >= 1000
-query salary <= 10000
-query hybrid ahmed 30000

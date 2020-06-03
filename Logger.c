@@ -52,20 +52,21 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueForLoggerSharedMemory);
     if(releasedProcessPID==-1)
     loggerSemaphore = SEMAPHORE_AVAILABLE;
-   // printf("released %d \n",releasedProcessPID);
     kill(releasedProcessPID, SIGCONT);
+    if(releasedProcessPID)printf("release logger wake up: %d\n",releasedProcessPID);
 }
 void respondToAcquireLogger(int PID)
 {
     if (loggerSemaphore == SEMAPHORE_AVAILABLE)
     {
         loggerSemaphore = SEMAPHORE_OCCUPIED;
-       // printf("I am the logger wake up %d \n",PID);
+        printf("Available: I am the logger wake up %d \n",PID);
         kill(PID,SIGUSR1);
         kill(PID, SIGCONT);
     }
     else
     {
+        printf("Not available: I am the logger keep sleeping %d \n",PID);
         addToWaitingQueue(&waitingQueueForLoggerSharedMemory, loggerMsgQLogger.PID);
     }
 }

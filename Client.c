@@ -8,7 +8,6 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
     char *readWordFromFile = "1";
     while (readWordFromFile != NULL)
     {
-        int acquireTypeFlag = 0;
         readWordFromFile = readConfigurationFile();
         if (readWordFromFile == NULL)
         {
@@ -40,7 +39,6 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             char key[MAXCHAR];
             strcpy(key, readConfigurationFile());
             requestToAcquire(atoi(key));
-            acquireTypeFlag = 1;
         }
         else if (strcmp(readWordFromFile, "release") == 0)
         {
@@ -53,20 +51,16 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             int queryType, searchedSalary;
             char *searchedString;
             getQueryRequestParameters(&queryType, &searchedSalary, searchedString);
+            printf("Client requesting query\n");
+            printf("%s",searchedString);
+            printf("<-- searchedString sent by client\n");
             requestToQuery(queryType, searchedSalary, searchedString);
-           int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
+            int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
             if(rec==-1)
             {
 
             }
             sendToQueryLogger();
-        }
-
-        if (acquireTypeFlag)
-        {
-            /*  handlingSIGUSR1_and_IgnoringSigStop();
-            raise(SIGSTOP);
-            signal(SIGSTOP, SIG_DFL);*/
         }
     }
     fclose(fp);
@@ -193,7 +187,6 @@ void logAdd(char *name, int salary)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -211,12 +204,7 @@ void logAdd(char *name, int salary)
     strcat(msgArray, salaryString);
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
-
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
-    handlingSIGUSR1_and_IgnoringSigStop();
-    raise(SIGSTOP);
-    signal(SIGSTOP, SIG_DFL);
 }
 void requestToModify(int key, int modification, int value)
 {
@@ -242,7 +230,6 @@ void logModify(int key, int modification, int value)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -263,14 +250,9 @@ void logModify(int key, int modification, int value)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
-    handlingSIGUSR1_and_IgnoringSigStop();
-    raise(SIGSTOP);
-    signal(SIGSTOP, SIG_DFL);
 }
 void requestToAcquire(int key)
 {
-   // printf("I am child: %d and I am client number: %d, I acquire key %d \n", getpid(), clientNumber, key);
     messageClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     messageClient.key = key;
     messageClient.callingProcessID = getpid();
@@ -281,6 +263,8 @@ void requestToAcquire(int key)
     }
     else
     {
+        raise(SIGSTOP);
+        signal(SIGSTOP, SIG_DFL);
         logAcquire(key);
     }
 }
@@ -291,7 +275,6 @@ void logAcquire(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -307,10 +290,6 @@ void logAcquire(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
-    handlingSIGUSR1_and_IgnoringSigStop();
-    raise(SIGSTOP);
-    signal(SIGSTOP, SIG_DFL);
 }
 void requestToRelease(int key)
 {
@@ -335,7 +314,6 @@ void logRelease(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -351,10 +329,6 @@ void logRelease(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
-    handlingSIGUSR1_and_IgnoringSigStop();
-    raise(SIGSTOP);
-    signal(SIGSTOP, SIG_DFL);
 }
 void requestToQuery(int queryType, int searchedSalary, char *searchedString)
 {
@@ -380,7 +354,6 @@ void logQuery()
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -394,9 +367,6 @@ void logQuery()
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
-    handlingSIGUSR1_and_IgnoringSigStop();
-    raise(SIGSTOP);
-    signal(SIGSTOP, SIG_DFL);
 }
 void sendToQueryLogger()
 {
@@ -404,5 +374,6 @@ void sendToQueryLogger()
 }
 void handlingSIGUSR1_and_IgnoringSigStop()
 {
+    printf("Woke me before sleeping\n");
     signal(SIGSTOP, SIG_IGN);
 }

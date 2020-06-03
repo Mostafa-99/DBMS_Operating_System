@@ -77,3 +77,527 @@
 1591169274	I release key: 0
 1591169274	I requested a query 
 1591169297	I requested a query 
+1591179863	I require to add mohamed with salary 20000
+1591179863	I require to add ahmed with salary 30000
+1591179863	I acquire key: 1
+1591179863	I acquire key: 1
+1591179863	I acquire key: 1
+1591179863	I acquire key: 1
+1591179863	I release key: 0
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591179863	I requested a query 
+1591180052	I require to add mohamed with salary 20000
+1591180052	I acquire key: 0
+1591180052	I require to modify key: 1 with value -10000
+1591180052	I require to modify key: 1 with value -10000
+1591180052	I require to modify key: 1 with value -10000
+1591180052	I require to modify key: 1 with value -10000
+1591180052	I release key: 0
+1591180052	I release key: 0
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180052	I requested a query 
+1591180130	I require to add mohamed with salary 20000
+1591180130	I require to add ahmed with salary 30000
+1591180130	I acquire key: 1
+1591180130	I require to modify key: 0 with value 10000
+1591180130	I require to modify key: 0 with value 10000
+1591180130	I release key: 0
+1591180130	I release key: 0
+1591180130	I release key: 0
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180130	I requested a query 
+1591180176	I require to add mohamed with salary 20000
+1591180176	I acquire key: 1
+1591180176	I require to modify key: 1 with value -10000
+1591180176	I require to modify key: 1 with value -10000
+1591180176	I require to modify key: 1 with value -10000
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180176	I requested a query 
+1591180515	I require to add mohamed with salary 20000
+1591180515	I acquire key: 1
+1591180515	I acquire key: 1
+1591180515	I release key: 1
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180515	I requested a query 
+1591180955	I require to add mohamed with salary 20000
+1591180955	I require to add ahmed with salary 30000
+1591180955	I acquire key: 1
+1591180955	I acquire key: 1
+1591180955	I acquire key: 1
+1591180955	I acquire key: 1
+1591180955	I require to modify key: 0 with value 10000
+1591180955	I require to modify key: 0 with value 10000
+1591180955	I release key: 0
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591180955	I requested a query 
+1591181065	I require to add mohamed with salary 20000
+1591181065	I require to add ahmed with salary 30000
+1591181065	I acquire key: 1
+1591181065	I acquire key: 0
+1591181065	I release key: 1
+1591181065	I release key: 1
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181065	I requested a query 
+1591181112	I require to add mohamed with salary 20000
+1591181112	I require to add ahmed with salary 30000
+1591181112	I acquire key: 1
+1591181112	I acquire key: 1
+1591181112	I acquire key: 1
+1591181112	I acquire key: 1
+1591181112	I require to modify key: 0 with value 10000
+1591181112	I require to modify key: 0 with value 10000
+1591181112	I release key: 0
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181112	I requested a query 
+1591181252	I require to add mohamed with salary 20000
+1591181252	I require to add ahmed with salary 30000
+1591181252	I acquire key: 1
+1591181252	I acquire key: 1
+1591181252	I acquire key: 1
+1591181252	I require to modify key: 0 with value 10000
+1591181252	I require to modify key: 0 with value 10000
+1591181252	I release key: 0
+1591181252	I release key: 0
+1591181252	I release key: 0
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181252	I requested a query 
+1591181351	I require to add mohamed with salary 20000
+1591181351	I require to add ahmed with salary 30000
+1591181351	I acquire key: 1
+1591181351	I release key: 1
+1591181351	I release key: 0
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181351	I requested a query 
+1591181892	I require to add mohamed with salary 20000
+1591181892	I acquire key: 1
+1591181892	I acquire key: 1
+1591181892	I require to modify key: 1 with value -10000
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591181892	I requested a query 
+1591182087	I require to add mohamed with salary 20000
+1591182087	I require to modify key: 1 with value -10000
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182087	I requested a query 
+1591182096	I require to add mohamed with salary 20000
+1591182096	I require to add ahmed with salary 30000
+1591182096	I acquire key: 1
+1591182096	I acquire key: 1
+1591182096	I require to modify key: 0 with value 10000
+1591182096	I require to modify key: 1 with value -10000
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182096	I requested a query 
+1591182647	I require to add mohamed with salary 20000
+1591182647	I require to add ahmed with salary 30000
+1591182647	I acquire key: 1
+1591182647	I acquire key: 1
+1591182647	I require to modify key: 0 with value 10000
+1591182647	I require to modify key: 0 with value 10000
+1591182647	I release key: 0
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182647	I requested a query 
+1591182712	I require to add mohamed with salary 20000
+1591182712	I require to modify key: 1 with value -10000
+1591182712	I release key: 0
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182712	I requested a query 
+1591182753	I require to add mohamed with salary 20000
+1591182753	I acquire key: 0
+1591182753	I requested a query 
+1591182753	I requested a query 
+1591182753	I requested a query 
+1591182753	I requested a query 
+1591182753	I requested a query 
+1591182753	I requested a query 
+1591182791	I require to add mohamed with salary 20000
+1591182791	I require to add ahmed with salary 30000
+1591182791	I acquire key: 1
+1591182791	I acquire key: 1
+1591182791	I acquire key: 1
+1591182791	I require to modify key: 0 with value 10000
+1591182791	I release key: 0
+1591182791	I requested a query 
+1591182791	I requested a query 
+1591182791	I requested a query 
+1591182791	I requested a query 
+1591182791	I requested a query 
+1591182862	I require to add mohamed with salary 20000
+1591182862	I acquire key: 1
+1591182862	I acquire key: 1
+1591182862	I acquire key: 1
+1591182862	I release key: 1
+1591182862	I requested a query 
+1591182862	I requested a query 
+1591182862	I requested a query 
+1591182862	I requested a query 
+1591182862	I requested a query 
+1591182862	I requested a query 
+1591182905	I require to add mohamed with salary 20000
+1591182905	I require to add ahmed with salary 30000
+1591182905	I acquire key: 1
+1591182905	I acquire key: 1
+1591182905	I acquire key: 1
+1591182905	I acquire key: 1
+1591182905	I release key: 1
+1591182905	I requested a query 
+1591182905	I requested a query 
+1591182905	I requested a query 
+1591182905	I requested a query 
+1591182905	I requested a query 
+1591182998	I require to add mohamed with salary 20000
+1591182998	I require to add ahmed with salary 30000
+1591182998	I acquire key: 1
+1591182998	I acquire key: 1
+1591182998	I acquire key: 1
+1591182998	I acquire key: 1
+1591182998	I require to modify key: 1 with value -10000
+1591182998	I requested a query 
+1591182998	I requested a query 
+1591182998	I requested a query 
+1591182998	I requested a query 
+1591182998	I requested a query 
+1591183033	I require to add mohamed with salary 20000
+1591183033	I require to add ahmed with salary 30000
+1591183033	I acquire key: 1
+1591183033	I acquire key: 1
+1591183033	I require to modify key: 0 with value 10000
+1591183033	I release key: 0
+1591183033	I requested a query 
+1591183033	I requested a query 
+1591183033	I requested a query 
+1591183033	I requested a query 
+1591183033	I requested a query 
+1591183057	I require to add mohamed with salary 20000
+1591183057	I require to modify key: 0 with value 10000
+1591183057	I requested a query 
+1591183057	I requested a query 
+1591183057	I requested a query 
+1591183057	I requested a query 
+1591183057	I requested a query 
+1591183057	I requested a query 
+1591183202	I require to add mohamed with salary 20000
+1591183202	I require to add ahmed with salary 30000
+1591183202	I require to modify key: 0 with value 10000
+1591183202	I require to modify key: 0 with value 10000
+1591183202	I require to modify key: 1 with value -10000
+1591183202	I release key: 0
+1591183202	I requested a query 
+1591183202	I requested a query 
+1591183202	I requested a query 
+1591183202	I requested a query 
+1591183224	I require to add mohamed with salary 20000
+1591183224	I require to add ahmed with salary 30000
+1591183224	I acquire key: 1
+1591183224	I acquire key: 1
+1591183224	I acquire key: 1
+1591183224	I require to modify key: 1 with value -10000
+1591183224	I requested a query 
+1591183224	I requested a query 
+1591183224	I requested a query 
+1591183224	I requested a query 
+1591183224	I requested a query 
+1591183263	I require to add mohamed with salary 20000
+1591183263	I require to add ahmed with salary 30000
+1591183263	I acquire key: 1
+1591183263	I acquire key: 1
+1591183263	I acquire key: 1
+1591183263	I acquire key: 1
+1591183263	I release key: 1
+1591183263	I requested a query 
+1591183263	I requested a query 
+1591183263	I requested a query 
+1591183263	I requested a query 
+1591183263	I requested a query 
+1591183296	I require to add mohamed with salary 20000
+1591183296	I require to add ahmed with salary 30000
+1591183296	I acquire key: 1
+1591183296	I require to modify key: 0 with value 10000
+1591183296	I require to modify key: 0 with value 10000
+1591183296	I require to modify key: 1 with value -10000
+1591183296	I require to modify key: 1 with value -10000
+1591183296	I requested a query 
+1591183296	I requested a query 
+1591183296	I requested a query 
+1591183296	I requested a query 
+1591183296	I requested a query 
+1591183314	I require to add mohamed with salary 20000
+1591183314	I require to add ahmed with salary 30000
+1591183314	I acquire key: 1
+1591183314	I acquire key: 1
+1591183314	I acquire key: 1
+1591183314	I acquire key: 1
+1591183314	I require to modify key: 1 with value -10000
+1591183314	I requested a query 
+1591183314	I requested a query 
+1591183314	I requested a query 
+1591183314	I requested a query 
+1591183314	I requested a query 
+1591183368	I require to add mohamed with salary 20000
+1591183368	I require to modify key: 0 with value 10000
+1591183368	I requested a query 
+1591183368	I requested a query 
+1591183368	I requested a query 
+1591183368	I requested a query 
+1591183368	I requested a query 
+1591183368	I requested a query 
+1591183435	I require to add mohamed with salary 20000
+1591183435	I require to add ahmed with salary 30000
+1591183435	I acquire key: 1
+1591183435	I acquire key: 1
+1591183435	I acquire key: 1
+1591183435	I acquire key: 1
+1591183435	I require to modify key: 1 with value -10000
+1591183435	I release key: 0
+1591183435	I requested a query 
+1591183435	I requested a query 
+1591183435	I requested a query 
+1591183435	I requested a query 
+1591183683	I require to add mohamed with salary 20000
+1591183683	I require to add ahmed with salary 30000
+1591183683	I acquire key: 1
+1591183683	I acquire key: 1
+1591183683	I acquire key: 1
+1591183683	I acquire key: 1
+1591183683	I require to modify key: 1 with value -10000
+1591183683	I requested a query 
+1591183683	I requested a query 
+1591183683	I requested a query 
+1591183683	I requested a query 
+1591183683	I requested a query 
+1591183807	I require to add mohamed with salary 20000
+1591183807	I require to add ahmed with salary 30000
+1591183807	I require to modify key: 0 with value 10000
+1591183807	I release key: 1
+1591183807	I requested a query 
+1591183807	I requested a query 
+1591183807	I requested a query 
+1591183807	I requested a query 
+1591183807	I requested a query 
+1591183814	I require to add mohamed with salary 20000
+1591183814	I require to add ahmed with salary 30000
+1591183814	I acquire key: 1
+1591183814	I acquire key: 1
+1591183814	I acquire key: 1
+1591183814	I acquire key: 1
+1591183814	I require to modify key: 1 with value -10000
+1591183814	I release key: 0
+1591183814	I requested a query 
+1591183814	I requested a query 
+1591183814	I requested a query 
+1591183814	I requested a query 
+1591183855	I require to add mohamed with salary 20000
+1591183855	I require to add ahmed with salary 30000
+1591183855	I acquire key: 1
+1591183855	I acquire key: 1
+1591183855	I require to modify key: 1 with value -10000
+1591183855	I release key: 0
+1591183855	I requested a query 
+1591183855	I requested a query 
+1591183855	I requested a query 
+1591183855	I requested a query 
+1591183855	I requested a query 
+1591183855	I requested a query 
+1591183973	I require to add mohamed with salary 20000
+1591183973	I require to add ahmed with salary 30000
+1591183973	I acquire key: 1
+1591183973	I acquire key: 0
+1591183973	I require to modify key: 0 with value 10000
+1591183973	I require to modify key: 1 with value -10000
+1591183973	I release key: 0
+1591183973	I requested a query 
+1591183973	I requested a query 
+1591183973	I requested a query 
+1591183973	I requested a query 
+1591184269	I require to add mohamed with salary 20000
+1591184269	I require to add ahmed with salary 30000
+1591184269	I acquire key: 1
+1591184269	I acquire key: 1
+1591184269	I acquire key: 1
+1591184269	I acquire key: 1
+1591184269	I require to modify key: 1 with value -10000
+1591184269	I requested a query 
+1591184269	I requested a query 
+1591184269	I requested a query 
+1591184269	I requested a query 
+1591184269	I requested a query 
+1591184292	I require to add mohamed with salary 20000
+1591184292	I require to add ahmed with salary 30000
+1591184292	I acquire key: 1
+1591184292	I acquire key: 1
+1591184292	I acquire key: 1
+1591184292	I require to modify key: 1 with value -10000
+1591184292	I release key: 0
+1591184292	I release key: 0
+1591184292	I release key: 0
+1591184292	I release key: 0
+1591184314	I require to add mohamed with salary 20000
+1591184314	I require to add ahmed with salary 30000
+1591184314	I acquire key: 1
+1591184314	I require to modify key: 1 with value -10000
+1591184314	I require to modify key: 1 with value -10000
+1591184314	I requested a query 
+1591184314	I requested a query 
+1591184314	I requested a query 
+1591184314	I requested a query 
+1591184314	I requested a query 
+1591184314	I requested a query 
+1591184426	I require to add mohamed with salary 20000
+1591184426	I require to add ahmed with salary 30000
+1591184426	I require to modify key: 0 with value 10000
+1591184426	I release key: 1
+1591184426	I release key: 1
+1591184426	I requested a query 
+1591184426	I requested a query 
+1591184426	I requested a query 
+1591184426	I requested a query 
+1591184426	I requested a query 
+1591184426	I requested a query 
+1591184522	I require to add mohamed with salary 20000
+1591184522	I require to add ahmed with salary 30000
+1591184522	I require to add ahmed with salary 30000
+1591184522	I require to add ahmed with salary 30000
+1591184522	I require to modify key: 1 with value -10000
+1591184522	I release key: 0
+1591184522	I requested a query 
+1591184522	I requested a query 
+1591184522	I requested a query 
+1591184522	I requested a query 
+1591184522	I requested a query 
