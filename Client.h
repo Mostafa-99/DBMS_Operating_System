@@ -41,7 +41,7 @@ void logAcquire(int key);
 void logRelease(int key);
 void logQuery();
 
-void getQueryRequestParameters(int *queryType,int *searchedSalary, char* searchedString);
+void getQueryRequestParameters(int *queryType,int *searchedSalary, char** searchedString);
 
 //----------------------------
 void handlingSIGUSR1_and_IgnoringSigStop(); //implemented

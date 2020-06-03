@@ -50,7 +50,7 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
         {
             int queryType, searchedSalary;
             char *searchedString;
-            getQueryRequestParameters(&queryType, &searchedSalary, searchedString);
+            getQueryRequestParameters(&queryType, &searchedSalary, &searchedString);
             printf("Client requesting query\n");
             printf("%s",searchedString);
             printf("<-- searchedString sent by client\n");
@@ -66,14 +66,14 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
     fclose(fp);
     exit(1);
 }
-void getQueryRequestParameters(int *queryType, int *searchedSalary, char *searchedString)
+void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searchedString)
 {
 
     char *queryNameType = readConfigurationFile();
     if (strcmp(queryNameType, "full") == 0)
     {
         *queryType = QUERY_BY_FULL_TABLE;
-        searchedString = NULL;
+        *searchedString = NULL;
         *searchedSalary = 0;
     }
     else if (strcmp(queryNameType, "name") == 0)
@@ -82,12 +82,12 @@ void getQueryRequestParameters(int *queryType, int *searchedSalary, char *search
         if (strcmp(queryNameType, "startswith") == 0)
         {
             *queryType = QUERY_BY_PART_OF_NAME;
-            searchedString = readConfigurationFile();
+            *searchedString = readConfigurationFile();
         }
         else if (strcmp(queryNameType, "exact") == 0)
         {
             *queryType = QUERY_BY_EXACT_NAME;
-            searchedString = readConfigurationFile();
+            *searchedString = readConfigurationFile();
         }
         *searchedSalary = 0;
     }
@@ -120,7 +120,7 @@ void getQueryRequestParameters(int *queryType, int *searchedSalary, char *search
     else if (strcmp(queryNameType, "hybrid") == 0)
     {
         *queryType = QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID;
-        searchedString = readConfigurationFile();
+        *searchedString = readConfigurationFile();
         *searchedSalary = atoi(readConfigurationFile());
     }
 }
@@ -335,7 +335,8 @@ void requestToQuery(int queryType, int searchedSalary, char *searchedString)
     messageClient.destinationProcess = MESSAGE_TYPE_QUERY;
     messageClient.queryType = queryType;
     messageClient.searchedSalary = searchedSalary;
-    messageClient.searchedString = searchedString;
+    strcpy(messageClient.searchedString, searchedString);
+    printf("I am the client searching for: %s\n", messageClient.searchedString);
     messageClient.callingProcessID = getpid();
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     if (send_val == -1)

@@ -69,7 +69,7 @@ struct message
 
     int queryType;
     int searchedSalary;
-    char* searchedString;
+    char searchedString[MAXCHAR];
     char* logString;
     int queryKeys[MAX_NUMBER_OF_RECORDS];
 };
