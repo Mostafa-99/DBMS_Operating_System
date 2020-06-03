@@ -1,0 +1,2 @@
+add mido 20000
+add soso 30000

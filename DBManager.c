@@ -1,42 +1,5 @@
 #include "DBManager.h"
 //----------------------------------------------------------------
-/*Semaphores*/
-struct inQueueProcess* createNewNode(int givenPID) 
-{ 
-    struct inQueueProcess* newProcess = (struct inQueueProcess*)malloc(sizeof(struct inQueueProcess)); 
-    newProcess->PID = givenPID; 
-    newProcess->nextProcess = NULL; 
-    return newProcess; 
-}
-struct waitingQueue* createWaitingQueue() 
-{ 
-    struct waitingQueue* newQueue = (struct waitingQueue*)malloc(sizeof(struct waitingQueue)); 
-    newQueue->front = newQueue->rear = NULL; 
-    return newQueue; 
-}
-void addToWaitingQueue(struct waitingQueue* givenQueue, int PID)
-{
-    struct inQueueProcess* newProcess = createNewNode(PID); 
-    if (givenQueue->rear == NULL) 
-    { 
-        givenQueue->front = givenQueue->rear = newProcess; 
-        return; 
-    } 
-    givenQueue->rear->nextProcess = newProcess; 
-    givenQueue->rear = newProcess; 
-}
-int removeFromWaitingQueue(struct waitingQueue* givenQueue) 
-{ 
-    if (givenQueue->front == NULL) return; 
-   
-    struct inQueueProcess* removedProcess = givenQueue->front; 
-  
-    givenQueue->front = givenQueue->front->nextProcess; 
-  
-    if (givenQueue->front == NULL) givenQueue->rear = NULL; 
-    int removedProcessPID = removedProcess->PID;
-    free(removedProcess); 
-}
 int respondToAdd(char* name, int salary, int lastKey)
 {
     struct DBrecord newRecord;
@@ -44,7 +7,7 @@ int respondToAdd(char* name, int salary, int lastKey)
     newRecord.salary = salary;
     newRecord.key = lastKey+1;
     DBtable[lastKey+1]=newRecord;
-   // printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
+    printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
     return lastKey+1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
@@ -67,40 +30,40 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
     if(DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED)
     {
         addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
-        printf("I am db manager nanannana %d \n",DBsemaphores[50]);
+       // printf("I am db manager nanannana %d \n",DBsemaphores[50]);
 
     }
     else
     {
         DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED;
-        printf("I am db manager wake up %d \n",CallingProccessPID);
-        kill(CallingProccessPID,SIGUSR1);
-        kill(CallingProccessPID,SIGCONT);
+     //   printf("I am db manager wake up %d \n",CallingProccessPID);
+      /*  kill(CallingProccessPID,SIGUSR1);
+        kill(CallingProccessPID,SIGCONT);*/
     }
 }
 void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey)
 {
     DBsemaphores[releasedRecordKey] == SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
-    printf("released \n");
-    kill(releasedProcessPID,SIGCONT);
+   // printf("released \n");
+   // kill(releasedProcessPID,SIGCONT);
 }
-void respondToQuery(int queryType, int searchedSalary, char searchedName[]) {
+void respondToQuery(int queryType, int searchedSalary, char searchedName[], int callingProcessID) {
     if(lastKey+1>0) {
-        int returnedKeysFromSearch[lastKey+1];
+        struct message sendSearchResult;
         int notReturnedKey = -1;
         int checkedRecordIndex=0;
         int returnedKeyIndex=0;
-        memset(DBsemaphores, notReturnedKey, lastKey+1);
+        memset(sendSearchResult.queryKeys, notReturnedKey, lastKey+1);
         if(queryType == QUERY_BY_FULL_TABLE) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
-                returnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
             }
         }
         else if(queryType == QUERY_BY_EXACT_NAME) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].name == searchedName){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
@@ -109,42 +72,42 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[]) {
                 if(strlen(DBtable[checkedRecordIndex].name) >= strlen(searchedName)){
                     int checkedChar = 0;
                     for(;checkedChar<strlen(searchedName)&&(DBtable[checkedRecordIndex].name[checkedChar]==searchedName[checkedChar]);checkedChar++);
-                    if(checkedChar==strlen(searchedName))rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    if(checkedChar==strlen(searchedName))sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
         else if(queryType==QUERY_BY_EXACT_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary == searchedSalary){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
         else if(queryType==QUERY_BY_LESS_THAN_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary < searchedSalary){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
         else if(queryType==QUERY_BY_GREATER_THAN_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary > searchedSalary){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
         else if(queryType==QUERY_BY_LESS_THAN_OR_EQUAL_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary <= searchedSalary){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
         else if(queryType==QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary >= searchedSalary){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
@@ -152,25 +115,34 @@ void respondToQuery(int queryType, int searchedSalary, char searchedName[]) {
         {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary == searchedSalary && DBtable[checkedRecordIndex].name == searchedName){
-                    rerturnedKeysFromSearch[returnedKeyIndex++] = checkedRecordIndex;
+                    sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
         }
+
+        // note always send not only if found
+        if (returnedKeyIndex>0) {
+            sendSearchResult.mtype=callingProcessID;
+            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
+        }
     }
+    
 }
-void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived){
+void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived, int loggerMsgQIdReceived){
     messageQueueID=messageQueueIdReceived;
     DBManagerPID = getpid();
     sharedMemoryId = sharedMemoryIdReceived;
     memset(DBsemaphores, SEMAPHORE_AVAILABLE, MAX_NUMBER_OF_RECORDS);
     DBtable = (struct DBrecord *)shmat(DBSharedMemoryIdReceived, (void *)0, 0);
+    loggerMsgQIdDBManager=loggerMsgQIdReceived;
 }
-void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int DBSharedMemoryIdReceived)
+void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived)
 {
-    initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived);
+    initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived,loggerMsgQIdReceived);
     while(1)
     {
         msgrcv(messageQueueID, &receivedMessage,(sizeof(struct message) - sizeof(receivedMessage.mtype)),DBManagerPID,!IPC_NOWAIT);
+                        printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
         int messageType = receivedMessage.destinationProcess;
         if(messageType == MESSAGE_TYPE_ADD) {
             lastKey = respondToAdd(receivedMessage.name,receivedMessage.salary,lastKey);
@@ -186,7 +158,8 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
             respondToRelease(receivedMessage.key, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
         }
         else if (messageType == MESSAGE_TYPE_QUERY) {
-            respondToQuery(receivedMessage.queryType, receivedMessage.searchedSalary, receivedMessage.searchedString);
+
+            respondToQuery(receivedMessage.queryType, receivedMessage.searchedSalary, receivedMessage.searchedString, receivedMessage.callingProcessID);
         }
     }
 }

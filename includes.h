@@ -1,3 +1,4 @@
+
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -26,6 +27,9 @@
 #define QUERY_BY_LESS_THAN_OR_EQUAL_SALARY 7
 #define QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID 8
 //----------------------------
+/*Logger shared memory*/
+#define MAX_MEASSAGE_SIZE 420
+#define MAX_NUMBER_SIZE 2
 /*System info*/
 int messageQueueID;
 

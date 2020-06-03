@@ -1,7 +1,10 @@
 //#include "declarations.c"
+#include "Semaphores.h"
 #include "Parent.c"
 #include "DBManager.c"
 #include "Client.c"
+#include "Logger.c"
+
 
 void do_child(); //base implemented
 
@@ -15,7 +18,7 @@ void main()
         roleIdentification();
         sleep(10);
         // add wait for exit code
-        for(int i=0;i<NUMBER_OF_PROCESS;i++)
+        for(int i=0;i<NUMBER_OF_CLIENTS;i++)
         {
            pid = wait(&stat_loc);
         }
@@ -48,7 +51,7 @@ void do_child()
         //printf("Role Message received I am child: %d and I am %s \n",getpid(),message.role);
         if(message.role=="DBManager")
         {
-            do_DBManager(message.sharedMemoryId,message.clientDBManagerMsgQId, message.DBSharedMemoryId);
+            do_DBManager(message.sharedMemoryId,message.clientDBManagerMsgQId, message.DBSharedMemoryId,message.processesLoggerMsgQId);
         }
         else if(message.role=="QueryLogger")
         {
@@ -56,12 +59,12 @@ void do_child()
         }
         else if(message.role=="Logger")
         {
-            //do_Logger();
+            do_logger(message.sharedMemoryId,message.processesLoggerMsgQId);
         }
         else
         {
-            printf("msg q %d \n",message.clientDBManagerMsgQId);
-            do_client(message.DBManagerId,message.QueryLoggerId,message.sharedMemoryId,message.clientDBManagerMsgQId, message.clientNumber,message.DBSharedMemoryId);
+            //printf("msg q %d \n",message.clientDBManagerMsgQId);
+            do_client(message.DBManagerId,message.QueryLoggerId,message.sharedMemoryId,message.clientDBManagerMsgQId, message.clientNumber,message.DBSharedMemoryId,message.processesLoggerMsgQId,message.LoggerId);
         } 
     }
 }
