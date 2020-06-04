@@ -62,6 +62,7 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             }*/
             sendToQueryLogger();
         }
+        sleep(5);
     }
     fclose(fp);
     exit(1);
