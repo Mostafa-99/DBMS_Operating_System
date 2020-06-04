@@ -16,6 +16,21 @@ add nana7 20000
 add dodo7 30000
 add nana8 20000
 add dodo8 30000
+add nana9 20000
+add dodo9 30000
+add nana10 20000
+add dodo10 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
+add ahmed 30000
 acquire 4
 acquire 5
 modify 4 + 10000

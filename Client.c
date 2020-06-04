@@ -50,10 +50,11 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             int queryType, searchedSalary;
             char *searchedString;
             getQueryRequestParameters(&queryType, &searchedSalary, &searchedString);
-            printf("Client requesting query\n");
-            printf("%s",searchedString);
-            printf("<-- searchedString sent by client\n");
-            requestToQuery(queryType, searchedSalary, searchedString);
+           /* printf("Client requesting query %d\n",queryType);
+            printf("%d \n",searchedSalary);
+            printf("%s \n",searchedString);
+            printf("<-- searchedString sent by client\n");*/
+            requestToQuery(queryType, searchedSalary, &searchedString);
            // int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
           /*  if(rec==-1)
             {
@@ -164,7 +165,7 @@ char *readConfigurationFile()
 }
 void requestToAdd(char *name, int salary)
 {
-   // printf("I am child: %d and I am client number: %d, I require to add %s with salary %d \n", getpid(), clientNumber, name, salary);
+   printf("I am child: %d and I am client number: %d, I require to add %s with salary %d \n", getpid(), clientNumber, name, salary);
     messageClient.destinationProcess = MESSAGE_TYPE_ADD;
     strcpy(messageClient.name, name);
     messageClient.salary = salary;
@@ -280,7 +281,7 @@ void requestToAcquire(int key)
 
         if(rec!=-1)
         {
-        printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
+      //  printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
             logAcquire(key);
         }
     }
@@ -359,19 +360,23 @@ void logRelease(int key)
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 }
-void requestToQuery(int queryType, int searchedSalary, char *searchedString)
+void requestToQuery(int queryType, int searchedSalary, char **searchedString)
 {
     messageClient.destinationProcess = MESSAGE_TYPE_QUERY;
     messageClient.queryType = queryType;
     messageClient.searchedSalary = searchedSalary;
-    strcpy(messageClient.searchedString, searchedString);
-    printf("I am the client searching for: %s\n", messageClient.searchedString);
+    printf("I am the client I request a query with type %d and salary %d searching for: %s\n",queryType, searchedSalary, *searchedString);
+   if(*searchedString!=NULL)
+   {
+    strcpy(messageClient.searchedString, *searchedString);
+   }
     messageClient.callingProcessID = getpid();
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     
     struct message messageClient2;
+    printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
     int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
-
+    printf("key %d \n",messageClient2.queryKeys[0]);
     if (rec == -1)
     {
         perror("error in send msg");

@@ -7,7 +7,7 @@ int respondToAdd(char* name, int salary, int lastKey)
     newRecord.salary = salary;
     newRecord.key = lastKey+1;
     DBtable[lastKey+1]=newRecord;
-    printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
+  //  printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
     return lastKey+1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
@@ -20,7 +20,7 @@ void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
       //  printf("New record will be modified from DB with name: %s and Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         DBtable[currentIndex].salary += modificationValue;
         if(DBtable[currentIndex].salary < lowerLimit) DBtable[currentIndex].salary = lowerLimit;
-        printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
+       // printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         //respondToRelease(keyOfTheRecordToBeModified,pointersOfWaitingQueuesForRecordKeys[keyOfTheRecordToBeModified]);
     }
 
@@ -29,7 +29,7 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
 {
     if(DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED)
     {
-         printf("Respond Acquire:add to queue DBmanager\n");
+       //  printf("Respond Acquire:add to queue DBmanager\n");
         addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
     }
     else
@@ -39,7 +39,7 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
        // kill(CallingProccessPID,SIGCONT);
         receivedMessage.mtype=CallingProccessPID;
         msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
-        printf("Respond Acquire:Semaphore available DBmanager\n");
+     //   printf("Respond Acquire:Semaphore available DBmanager\n");
 
     }
 }
@@ -52,13 +52,13 @@ void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waiti
     if(releasedProcessPID!=-1)
     {
        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
-        printf("Respond to Release DBmanager\n");
+       // printf("Respond to Release DBmanager\n");
     }
 
 }
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {
     if(lastKey+1>0) {
-        printf("Respond to Query DBmanager: %s\n",searchedName);
+      //  printf("Respond to Query DBmanager: %s\n",searchedName);
         struct message sendSearchResult;
         int notReturnedKey = -1;
         int checkedRecordIndex=0;
@@ -88,12 +88,14 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
             }
         }
         else if(queryType==QUERY_BY_EXACT_SALARY) {
+
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(DBtable[checkedRecordIndex].salary == searchedSalary){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                     printf("return key: %d\n",checkedRecordIndex);
                 }
             }
+    printf("I am the Manager I request a query with type  and salary  searching for:  msg to \n");
         }
         else if(queryType==QUERY_BY_LESS_THAN_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
@@ -136,8 +138,9 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
                 }
             }
         }
-        if (returnedKeyIndex>0) {
+        if (returnedKeyIndex>=0) {
             sendSearchResult.mtype=callingProcessID;
+
             msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
         }
     }

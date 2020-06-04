@@ -1,2 +1,50 @@
 add saad 20000
 add sa3dia 30000
+add nana 20000
+add dodo 30000
+add nana1 20000
+add dodo1 30000
+add nana2 20000
+add dodo2 30000
+add nana3 20000
+add dodo3 30000
+add nana4 20000
+add dodo4 30000
+add nana5 20000
+add dodo5 30000
+add nana6 20000
+add dodo6 30000
+add nana7 20000
+add dodo7 30000
+add nana8 20000
+add dodo8 30000
+acquire 4
+acquire 5
+modify 4 + 10000
+modify 5 - 10000
+release 4
+release 5
+add nana 20000
+add dodo 30000
+add nana1 20000
+add dodo1 30000
+add nana2 20000
+add dodo2 30000
+add nana3 20000
+add dodo3 30000
+add nana4 20000
+add dodo4 30000
+add nana5 20000
+add dodo5 30000
+add nana6 20000
+add dodo6 30000
+add nana7 20000
+add dodo7 30000
+add nana8 20000
+add dodo8 30000
+acquire 4
+acquire 5
+modify 4 + 10000
+modify 5 - 10000
+release 4
+release 5
