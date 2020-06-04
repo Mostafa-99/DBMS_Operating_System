@@ -22,7 +22,7 @@ void respondToRequests();
 int respondToAdd(char* name, int salary, int lastKey); //implemented
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue); //implemented
 void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
-void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
+void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey);
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int CallingProccessPID);
 void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived);
 void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived);

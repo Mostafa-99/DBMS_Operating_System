@@ -13,7 +13,6 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
         {
             break;
         }
-       // printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz ___ %s \n", readWordFromFile);
 
         if (strcmp(readWordFromFile, "add") == 0)
         {
@@ -55,11 +54,11 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             printf("%s",searchedString);
             printf("<-- searchedString sent by client\n");
             requestToQuery(queryType, searchedSalary, searchedString);
-            int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
-            if(rec==-1)
+           // int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
+          /*  if(rec==-1)
             {
 
-            }
+            }*/
             sendToQueryLogger();
         }
     }
@@ -186,7 +185,8 @@ void logAdd(char *name, int salary)
     messageLoggerClient.PID = getpid();
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
+    
+    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -205,6 +205,10 @@ void logAdd(char *name, int salary)
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
+    
+    handlingSIGUSR1_and_IgnoringSigStop();
+    raise(SIGSTOP);
+    signal(SIGSTOP, SIG_DFL);
 }
 void requestToModify(int key, int modification, int value)
 {
@@ -230,6 +234,7 @@ void logModify(int key, int modification, int value)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
+    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -250,6 +255,10 @@ void logModify(int key, int modification, int value)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
+
+    handlingSIGUSR1_and_IgnoringSigStop();
+    raise(SIGSTOP);
+    signal(SIGSTOP, SIG_DFL);
 }
 void requestToAcquire(int key)
 {
@@ -263,9 +272,17 @@ void requestToAcquire(int key)
     }
     else
     {
-        raise(SIGSTOP);
-        signal(SIGSTOP, SIG_DFL);
-        logAcquire(key);
+        //raise(SIGSTOP);
+        //signal(SIGSTOP, SIG_DFL);
+        struct message messageClient2;
+
+        int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
+
+        if(rec!=-1)
+        {
+        printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
+            logAcquire(key);
+        }
     }
 }
 void logAcquire(int key)
@@ -275,6 +292,7 @@ void logAcquire(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
+    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -290,14 +308,20 @@ void logAcquire(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
+
+    handlingSIGUSR1_and_IgnoringSigStop();
+    raise(SIGSTOP);
+    signal(SIGSTOP, SIG_DFL);
 }
 void requestToRelease(int key)
 {
-    //printf("I am child: %d and I am client number: %d, I release key %d \n", getpid(), clientNumber, key);
+    //printf("I am child: %d and I am client number: %d, I release key %d kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk\n", getpid(), &messageClient, clientDBManagerMsgQId);
     messageClient.destinationProcess = MESSAGE_TYPE_RELEASE;
     messageClient.key = key;
     messageClient.callingProcessID = getpid();
+    messageClient.mtype=DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
+   // printf("I am child: %d and I am client number: %d, I release key %d llllllllllllllllllllllllllllllllllllllllll\n", getpid(), clientNumber, send_val);
     if (send_val == -1)
     {
         perror("error in send msg");
@@ -314,6 +338,7 @@ void logRelease(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
+    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -329,6 +354,10 @@ void logRelease(int key)
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
+
+    handlingSIGUSR1_and_IgnoringSigStop();
+    raise(SIGSTOP);
+    signal(SIGSTOP, SIG_DFL);
 }
 void requestToQuery(int queryType, int searchedSalary, char *searchedString)
 {
@@ -339,7 +368,11 @@ void requestToQuery(int queryType, int searchedSalary, char *searchedString)
     printf("I am the client searching for: %s\n", messageClient.searchedString);
     messageClient.callingProcessID = getpid();
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    if (send_val == -1)
+    
+    struct message messageClient2;
+    int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
+
+    if (rec == -1)
     {
         perror("error in send msg");
     }
@@ -355,6 +388,7 @@ void logQuery()
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
+    handlingSIGUSR1_and_IgnoringSigStop();
     raise(SIGSTOP);
     signal(SIGSTOP, SIG_DFL);
 
@@ -368,6 +402,9 @@ void logQuery()
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
+    handlingSIGUSR1_and_IgnoringSigStop();
+    raise(SIGSTOP);
+    signal(SIGSTOP, SIG_DFL);
 }
 void sendToQueryLogger()
 {
@@ -375,6 +412,6 @@ void sendToQueryLogger()
 }
 void handlingSIGUSR1_and_IgnoringSigStop()
 {
-    printf("Woke me before sleeping\n");
+    //printf("Woke me before sleeping\n");
     signal(SIGSTOP, SIG_IGN);
 }

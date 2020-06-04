@@ -20,8 +20,8 @@ int removeFromWaitingQueue(struct waitingQueue* givenQueue);  //implemented
 
 
 //----------------------------
-#define NUMBER_OF_PROCESS 6
-#define NUMBER_OF_CLIENTS 3
+#define NUMBER_OF_PROCESS 7
+#define NUMBER_OF_CLIENTS 4
 #define DBMANAGER_INDEX 0
 #define QUERY_LOGGER_INDEX 1
 #define LOGGER_INDEX 2

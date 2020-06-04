@@ -21,7 +21,7 @@ void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
         DBtable[currentIndex].salary += modificationValue;
         if(DBtable[currentIndex].salary < lowerLimit) DBtable[currentIndex].salary = lowerLimit;
         printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
-        respondToRelease(keyOfTheRecordToBeModified,pointersOfWaitingQueuesForRecordKeys[keyOfTheRecordToBeModified]);
+        //respondToRelease(keyOfTheRecordToBeModified,pointersOfWaitingQueuesForRecordKeys[keyOfTheRecordToBeModified]);
     }
 
 }
@@ -34,18 +34,27 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
     }
     else
     {
-        printf("Respond Acquire:Semaphore available DBmanager\n");
         DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED;
-        kill(CallingProccessPID,SIGUSR1);
-        kill(CallingProccessPID,SIGCONT);
+        //kill(CallingProccessPID,SIGUSR1);
+       // kill(CallingProccessPID,SIGCONT);
+        receivedMessage.mtype=CallingProccessPID;
+        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
+        printf("Respond Acquire:Semaphore available DBmanager\n");
+
     }
 }
-void respondToRelease(int releasedRecordKey, struct waitingQueue* waitingQueueOfThePassedKey)
+void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey)
 {
-    printf("Respond to Release DBmanager\n");
     DBsemaphores[releasedRecordKey] == SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
-    kill(releasedProcessPID,SIGCONT);
+    //kill(releasedProcessPID,SIGCONT);
+    receivedMessage.mtype=releasedProcessPID;
+    if(releasedProcessPID!=-1)
+    {
+       msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
+        printf("Respond to Release DBmanager\n");
+    }
+
 }
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {
     if(lastKey+1>0) {
@@ -129,7 +138,7 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
         }
         if (returnedKeyIndex>0) {
             sendSearchResult.mtype=callingProcessID;
-            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), IPC_NOWAIT);
+            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
         }
     }
     
@@ -160,7 +169,7 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
             respondToAcquire(receivedMessage.key, receivedMessage.callingProcessID, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
         }
         else if (messageType == MESSAGE_TYPE_RELEASE) {
-            respondToRelease(receivedMessage.key, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
+            respondToRelease(receivedMessage.key, receivedMessage.callingProcessID,pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
         }
         else if (messageType == MESSAGE_TYPE_QUERY) {
             respondToQuery(receivedMessage.queryType, receivedMessage.searchedSalary, receivedMessage.searchedString, receivedMessage.callingProcessID);

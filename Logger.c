@@ -61,7 +61,7 @@ void respondToAcquireLogger(int PID)
     {
         loggerSemaphore = SEMAPHORE_OCCUPIED;
         printf("Available: I am the logger wake up %d \n",PID);
-        kill(PID,SIGUSR1);
+        //kill(PID,SIGUSR1);
         kill(PID, SIGCONT);
     }
     else

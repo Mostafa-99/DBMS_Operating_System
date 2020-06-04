@@ -16,7 +16,7 @@ void main()
     {   int stat_loc;
         initializeSharedRecources();
         roleIdentification();
-        sleep(10);
+        sleep(5);
         // add wait for exit code
         for(int i=0;i<NUMBER_OF_CLIENTS;i++)
         {
