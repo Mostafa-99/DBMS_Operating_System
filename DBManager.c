@@ -31,29 +31,38 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
     {
        //  printf("Respond Acquire:add to queue DBmanager\n");
         addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
+        printf("Process:%d wanted key: %d but added to waiting queue\n",CallingProccessPID,requiredRecordKey);
     }
     else
     {
-        DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED;
+        DBsemaphores[requiredRecordKey] = SEMAPHORE_OCCUPIED;
+        printf("Semaphore %d is now occupied by %d\n",requiredRecordKey,CallingProccessPID);
         //kill(CallingProccessPID,SIGUSR1);
-       // kill(CallingProccessPID,SIGCONT);
-        receivedMessage.mtype=CallingProccessPID;
-        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
+        sentMessageToClient.mtype=CallingProccessPID;
+        sentMessageToClient.destinationProcess = MESSAGE_TYPE_NO_SLEEP; 
+        msgsnd(messageQueueID, &sentMessageToClient, sizeof(sentMessageToClient)-sizeof(sentMessageToClient.mtype), !IPC_NOWAIT);
+        kill(CallingProccessPID,SIGCONT);
      //   printf("Respond Acquire:Semaphore available DBmanager\n");
 
     }
 }
 void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey)
 {
-    DBsemaphores[releasedRecordKey] == SEMAPHORE_AVAILABLE;
+    printf("Semaphore %d is now released\n",releasedRecordKey);
+    DBsemaphores[releasedRecordKey] = SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
-    //kill(releasedProcessPID,SIGCONT);
-    receivedMessage.mtype=releasedProcessPID;
+    if(releasedProcessPID!=-1)
+    {
+        kill(releasedProcessPID,SIGCONT);
+        printf("process %d returned from the wait\n",releasedProcessPID);
+    }
+
+    /*receivedMessage.mtype=releasedProcessPID;
     if(releasedProcessPID!=-1)
     {
        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
        // printf("Respond to Release DBmanager\n");
-    }
+    }*/
 
 }
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {

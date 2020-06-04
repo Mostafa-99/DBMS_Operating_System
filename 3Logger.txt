@@ -1,27 +1,22 @@
-1591254407	I require to add nana with salary 20000
-1591254412	I require to add dodo with salary 30000
-1591254417	I require to add nana1 with salary 20000
-1591254422	I require to add dodo1 with salary 30000
-1591254427	I require to add nana2 with salary 20000
-1591254432	I require to add dodo2 with salary 30000
-1591254437	I require to add mohamed with salary 20000
-1591254442	I require to add ahmed with salary 30000
-1591254447	I require to add ahmed2 with salary 30000
-1591254452	I require to add nana with salary 20000
-1591254457	I require to add dodo with salary 30000
-1591254462	I require to add nana1 with salary 20000
-1591254467	I require to add dodo1 with salary 30000
-1591254472	I require to add nana2 with salary 20000
-1591254477	I require to add dodo2 with salary 30000
-1591254482	I require to add nana3 with salary 20000
-1591254487	I require to add dodo3 with salary 30000
-1591254492	I require to add nana4 with salary 20000
-1591254497	I require to add dodo4 with salary 30000
-1591254502	I require to add nana5 with salary 20000
-1591254507	I require to add dodo5 with salary 30000
-1591254512	I require to add nana6 with salary 20000
-1591254517	I require to add dodo6 with salary 30000
-1591254522	I require to add nana7 with salary 20000
-1591254527	I require to add dodo7 with salary 30000
-1591254532	I require to add nana8 with salary 20000
-1591254537	I require to add dodo8 with salary 30000
+1591292758	I require to add mido with salary 20000
+1591292763	I require to add soso with salary 30000
+1591292768	I require to add mohamed_4 with salary 20000
+1591292773	I require to add ahmed_4 with salary 30000
+1591292778	I acquire key: 1
+1591292783	I acquire key: 0
+1591292788	I require to modify key: 0 with value 10000
+1591292793	I require to modify key: 1 with value -10000
+1591292798	I release key: 1
+1591292803	I release key: 0
+1591292808	I acquire key: 2
+1591292813	I acquire key: 3
+1591292818	I require to modify key: 2 with value 10000
+1591292823	I require to modify key: 3 with value -10000
+1591292828	I release key: 2
+1591292833	I release key: 3
+1591292843	I acquire key: 1
+1591292853	I acquire key: 0
+1591292858	I require to modify key: 0 with value 10000
+1591292863	I require to modify key: 1 with value -10000
+1591292868	I release key: 1
+1591292873	I release key: 0

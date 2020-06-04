@@ -16,6 +16,7 @@
 #define MESSAGE_TYPE_ACQUIRE 3
 #define MESSAGE_TYPE_RELEASE 4
 #define MESSAGE_TYPE_QUERY 5
+#define MESSAGE_TYPE_NO_SLEEP 6
 //----------------------------
 #define QUERY_BY_FULL_TABLE 0
 #define QUERY_BY_EXACT_NAME 1

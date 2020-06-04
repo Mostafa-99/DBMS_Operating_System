@@ -1,27 +1,22 @@
-add nana 20000
-add dodo 30000
-add nana1 20000
-add dodo1 30000
-add nana2 20000
-add dodo2 30000
-add mohamed 20000
-add ahmed 30000
-add ahmed2 30000
-add nana 20000
-add dodo 30000
-add nana1 20000
-add dodo1 30000
-add nana2 20000
-add dodo2 30000
-add nana3 20000
-add dodo3 30000
-add nana4 20000
-add dodo4 30000
-add nana5 20000
-add dodo5 30000
-add nana6 20000
-add dodo6 30000
-add nana7 20000
-add dodo7 30000
-add nana8 20000
-add dodo8 30000
+add mido 20000
+add soso 30000
+add mohamed_4 20000
+add ahmed_4 30000
+acquire 1
+acquire 0
+modify 0 + 10000
+modify 1 - 10000
+release 1
+release 0
+acquire 2
+acquire 3
+modify 2 + 10000
+modify 3 - 10000
+release 2
+release 3
+acquire 1
+acquire 0
+modify 0 + 10000
+modify 1 - 10000
+release 1
+release 0

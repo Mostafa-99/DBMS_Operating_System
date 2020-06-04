@@ -274,17 +274,26 @@ void requestToAcquire(int key)
     }
     else
     {
-        //raise(SIGSTOP);
-        //signal(SIGSTOP, SIG_DFL);
         struct message messageClient2;
-
-        int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
-
-        if(rec!=-1)
-        {
-      //  printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
-            logAcquire(key);
+        int nothingRecieved = -1;
+        messageClient2.destinationProcess = nothingRecieved;
+        int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), IPC_NOWAIT);
+        if(messageClient2.destinationProcess == nothingRecieved){
+            printf("I will sleep before aquiring %d\n",getpid());
+            raise(SIGSTOP);
         }
+        logAcquire(key);
+        printf("I woke up and logged %d\n",getpid());
+        //signal(SIGSTOP, SIG_DFL);
+        
+
+        msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), IPC_NOWAIT);
+
+    //     if(rec!=-1)
+    //     {
+    //   //  printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \n");
+            
+    //     }
     }
 }
 void logAcquire(int key)

@@ -5,6 +5,7 @@
 
 long int DBManagerPID;
 struct message receivedMessage;
+struct message sentMessageToClient;
 int sharedMemoryId;
 int lastKey=-1;
 struct waitingQueue *pointersOfWaitingQueuesForRecordKeys[MAX_NUMBER_OF_RECORDS];
