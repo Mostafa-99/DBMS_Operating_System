@@ -2,6 +2,7 @@
 #include "includes.h"
 
 int queryLoggerMsgQIdQuery;
+int numberOfCurrentLog;
 
 struct queryLoggerMsgQ queryLoggerMsgQProccess;
 

@@ -437,10 +437,52 @@ void sendToQueryLogger()
     sprintf(clientNumberString, "%d", clientNumber);
     strcat(message,clientNumberString);
 
-    char msgArray[MAXCHAR] = " I requested a query ";
+    char msgArray[MAXCHAR] = ", I requested a ";
     strcat(message, msgArray);
-    //need switch case for query type
 
+    //replace queryType by the real query tu=ype variable
+    int queryType=1;
+    switch (queryType)
+    {
+    case QUERY_BY_FULL_TABLE:
+        strcpy(msgArray,"QUERY_BY_FULL_TABLE");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_EXACT_NAME :
+        strcpy(msgArray,"QUERY_BY_EXACT_NAME");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_PART_OF_NAME:
+        strcpy(msgArray,"QUERY_BY_PART_OF_NAME");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_EXACT_SALARY:
+        strcpy(msgArray,"QUERY_BY_EXACT_SALARY");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_GREATER_THAN_SALARY:
+        strcpy(msgArray,"QUERY_BY_GREATER_THAN_SALARY");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_LESS_THAN_SALARY:
+        strcpy(msgArray,"QUERY_BY_LESS_THAN_SALARY");
+            strcat(message, msgArray);
+        break;
+    case QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY:
+        strcpy(msgArray,"QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_LESS_THAN_OR_EQUAL_SALARY:
+        strcpy(msgArray,"QUERY_BY_LESS_THAN_OR_EQUAL_SALARY");
+        strcat(message, msgArray);
+        break;
+    case QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID:
+        strcpy(msgArray,"QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID");
+        strcat(message, msgArray);
+        break;
+    default:
+        break;
+    }
     strcpy(queryLoggerMsgQClient.message,message);
     queryLoggerMsgQClient.mtype=QueryLoggerId;
     //set point and dynamic alloc

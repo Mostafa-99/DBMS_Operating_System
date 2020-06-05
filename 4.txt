@@ -14,3 +14,5 @@ modify 2 + 10000
 modify 3 - 10000
 release 2
 release 3
+query name exact saad
+query name startswith a

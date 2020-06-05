@@ -1,46 +1,67 @@
-1591327974	I am DBManager I added saad with salary 20000
-1591327976	I require to add soso77 with salary 30000
-1591328074	I require to add mido77 with salary 20000
-1591328145	I require to add mido77 with salary 20000
-1591328147	I require to add soso77 with salary 30000
-1591328149	I require to add mohamed_45 with salary 20000
-1591328151	I require to add ahmed_45 with salary 30000
-1591328204	I require to add mido77 with salary 20000
-1591328206	I require to add soso77 with salary 30000
-1591328208	I require to add mohamed_45 with salary 20000
-1591328923	I require to add mido77 with salary 20000
-1591328923	I require to add mido77 with salary 20000
-1591328925	I require to add soso77 with salary 30000
-1591328927	I require to add mohamed_45 with salary 20000
-1591328929	I require to add ahmed_45 with salary 30000
-1591328943	I acquire key: 1
-1591328945	I acquire key: 0
-1591328947	I require to modify key: 0 with value 10000
-1591328949	I require to modify key: 1 with value -10000
-1591328951	I release key: 1
-1591328953	I release key: 0
-1591328963	I acquire key: 2
-1591328965	I acquire key: 3
-1591328967	I require to modify key: 2 with value 10000
-1591328969	I require to modify key: 3 with value -10000
-1591328971	I release key: 2
-1591328973	I release key: 3
-1591329035	I require to add mido77 with salary 20000
-1591329037	I require to add soso77 with salary 30000
-1591329039	I require to add mohamed_45 with salary 20000
-1591329055	I require to add mido77 with salary 20000
-1591329057	I require to add soso77 with salary 30000
-1591329059	I require to add mohamed_45 with salary 20000
-1591329061	I require to add ahmed_45 with salary 30000
-1591329075	I acquire key: 1
-1591329077	I acquire key: 0
-1591329079	I require to modify key: 0 with value 10000
-1591329081	I require to modify key: 1 with value -10000
-1591329083	I release key: 1
-1591329085	I release key: 0
-1591329095	I acquire key: 2
-1591329097	I acquire key: 3
-1591329099	I require to modify key: 2 with value 10000
-1591329101	I require to modify key: 3 with value -10000
-1591329103	I release key: 2
-1591329105	I release key: 3
+1591381632	I require to add mido77 with salary 20000
+1591381632	I require to add mido77 with salary 20000
+1591381634	I require to add soso77 with salary 30000
+1591381636	I require to add mohamed_45 with salary 20000
+1591381638	I require to add ahmed_45 with salary 30000
+1591381644	I acquire key: 1
+1591381646	I acquire key: 0
+1591381648	I require to modify key: 0 with value 10000
+1591381650	I require to modify key: 1 with value -10000
+1591381652	I release key: 1
+1591381654	I release key: 0
+1591381656	I acquire key: 2
+1591381658	I acquire key: 3
+1591381660	I require to modify key: 2 with value 10000
+1591381662	I require to modify key: 3 with value -10000
+1591381705	I require to add mido77 with salary 20000
+1591381707	I require to add soso77 with salary 30000
+1591381709	I require to add mohamed_45 with salary 20000
+1591381711	I require to add ahmed_45 with salary 30000
+1591381717	I acquire key: 1
+1591381719	I acquire key: 0
+1591381721	I require to modify key: 0 with value 10000
+1591381723	I require to modify key: 1 with value -10000
+1591381725	I release key: 1
+1591381727	I release key: 0
+1591381729	I acquire key: 2
+1591381731	I acquire key: 3
+1591381733	I require to modify key: 2 with value 10000
+1591381735	I require to modify key: 3 with value -10000
+1591381737	I release key: 2
+1591381739	I release key: 3
+1591381741	I requested a query 
+1591381743	I requested a query 
+1591381858	I require to add mido77 with salary 20000
+1591381860	I require to add soso77 with salary 30000
+1591381862	I require to add mohamed_45 with salary 20000
+1591381864	I require to add ahmed_45 with salary 30000
+1591381864	I require to add ahmed_45 with salary 30000
+1591381878	I acquire key: 1
+1591381890	I require to modify key: 0 with value 10000
+1591381892	I require to modify key: 1 with value -10000
+1591381894	I release key: 1
+1591381896	I release key: 0
+1591381898	I acquire key: 2
+1591381900	I acquire key: 3
+1591381902	I require to modify key: 2 with value 10000
+1591381904	I require to modify key: 3 with value -10000
+1591381906	I release key: 2
+1591381908	I release key: 3
+1591381910	I requested a query 
+1591381912	I requested a query 
+1591381969	I require to add soso77 with salary 30000
+1591381971	I require to add mohamed_45 with salary 20000
+1591381971	I require to add mohamed_45 with salary 20000
+1591381973	I require to add ahmed_45 with salary 30000
+1591381979	I acquire key: 1
+1591381983	I require to modify key: 0 with value 10000
+1591381985	I require to modify key: 1 with value -10000
+1591381987	I release key: 1
+1591381989	I release key: 0
+1591381991	I acquire key: 2
+1591381993	I acquire key: 3
+1591381995	I require to modify key: 2 with value 10000
+1591381997	I require to modify key: 3 with value -10000
+1591381999	I release key: 2
+1591382002	I release key: 3
+1591382006	I requested a query 
