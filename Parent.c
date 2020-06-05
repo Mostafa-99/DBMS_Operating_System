@@ -39,6 +39,8 @@ void roleIdentification()
     int send_val;
     key_t clientDBManager_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
     key_t processesLogger_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
+    key_t processesQueryLogger_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
+
     int clientNumber=1;
     for(int i=0;i<NUMBER_OF_PROCESS;i++)
     {     
@@ -56,6 +58,8 @@ void roleIdentification()
         else if(i==QUERY_LOGGER_INDEX) //QueryLogger
         {
             message.role="QueryLogger";
+            message.queryLoggerMsgQId=processesQueryLogger_msgqid;
+
         }
         else if(i==LOGGER_INDEX)
         {
@@ -73,6 +77,7 @@ void roleIdentification()
             message.clientNumber=clientNumber;
             message.processesLoggerMsgQId=processesLogger_msgqid;
             message.LoggerId=processesIds[LOGGER_INDEX];
+            message.queryLoggerMsgQId=processesQueryLogger_msgqid;
             clientNumber++;
         }
         send_val = msgsnd(msgqid, &message, sizeof(message)-sizeof(message.mtype), !IPC_NOWAIT);

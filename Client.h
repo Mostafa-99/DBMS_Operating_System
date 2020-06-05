@@ -11,7 +11,7 @@ int sharedMemoryId;
 int clientDBManagerMsgQId;
 int clientNumber;
 int loggerMsgQIdClient;
-
+int queryLoggerMsgQIdClient;
 
 FILE * fp;
 char* filename;
@@ -23,10 +23,13 @@ int send_val;
 struct message messageClient;
 struct DBrecord *DBtableView;
 struct loggerMsgQ messageLoggerClient;
+
+struct queryLoggerMsgQ queryLoggerMsgQClient;
+
 //----------------------------
 /*DB Client functions*/
-void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived,int loggerIdReceived);
-void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived,int loggerIdReceived);
+void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived,int loggerIdReceived,int queryLoggerMsgQIdReceived);
+void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived,int loggerIdReceived,int queryLoggerMsgQIdReceived);
 void openConfigurationFile();
 char * readConfigurationFile();
 void requestToAdd(char* name, int salary);

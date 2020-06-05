@@ -4,6 +4,8 @@
 #include "DBManager.c"
 #include "Client.c"
 #include "Logger.c"
+#include "QueryLogger.c"
+
 
 
 void do_child(); //base implemented
@@ -55,7 +57,7 @@ void do_child()
         }
         else if(message.role=="QueryLogger")
         {
-            //do_QueryLogger();
+            do_queryLogger(message.queryLoggerMsgQId);
         }
         else if(message.role=="Logger")
         {
@@ -64,7 +66,7 @@ void do_child()
         else
         {
             //printf("msg q %d \n",message.clientDBManagerMsgQId);
-            do_client(message.DBManagerId,message.QueryLoggerId,message.sharedMemoryId,message.clientDBManagerMsgQId, message.clientNumber,message.DBSharedMemoryId,message.processesLoggerMsgQId,message.LoggerId);
+            do_client(message.DBManagerId,message.QueryLoggerId,message.sharedMemoryId,message.clientDBManagerMsgQId, message.clientNumber,message.DBSharedMemoryId,message.processesLoggerMsgQId,message.LoggerId,message.queryLoggerMsgQId);
         } 
     }
 }

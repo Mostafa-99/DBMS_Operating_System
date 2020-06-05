@@ -56,6 +56,7 @@ struct parentMsgBuff
    int clientDBManagerMsgQId;
    int clientNumber;
    int processesLoggerMsgQId;
+   int queryLoggerMsgQId;
 };
 struct message
 {
@@ -86,6 +87,13 @@ struct loggerMsgQ
     long mtype;
     int PID;
     int destinationProcess;
+};
+struct queryLoggerMsgQ
+{
+    long mtype;
+    struct DBrecord * firstRecordAddress;
+    int size;
+    char message[MAXCHAR];
 };
 //----------------------------
 /*Parent functions*/

@@ -7,7 +7,7 @@ int respondToAdd(char* name, int salary, int lastKey)
     newRecord.salary = salary;
     newRecord.key = lastKey+1;
     DBtable[lastKey+1]=newRecord;
-    printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
+   // printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
     return lastKey+1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
@@ -20,7 +20,7 @@ void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
       //  printf("New record will be modified from DB with name: %s and Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         DBtable[currentIndex].salary += modificationValue;
         if(DBtable[currentIndex].salary < lowerLimit) DBtable[currentIndex].salary = lowerLimit;
-        printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
+      //  printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         //respondToRelease(keyOfTheRecordToBeModified,pointersOfWaitingQueuesForRecordKeys[keyOfTheRecordToBeModified]);
     }
 
@@ -39,20 +39,20 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
        // kill(CallingProccessPID,SIGCONT);
         receivedMessage.mtype=CallingProccessPID;
         msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
-        printf("Respond Acquire:Semaphore available DBmanager\n");
+      //  printf("Respond Acquire:Semaphore available DBmanager\n");
 
     }
 }
 void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey)
 {
 
-    printf("Semaphore %d is now released\n",releasedRecordKey);
+  //  printf("Semaphore %d is now released\n",releasedRecordKey);
     DBsemaphores[releasedRecordKey] = SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
     if(releasedProcessPID!=-1)
     {
        // kill(releasedProcessPID,SIGCONT);
-        printf("process %d returned from the wait\n",releasedProcessPID);
+   //     printf("process %d returned from the wait\n",releasedProcessPID);
           receivedMessage.mtype=releasedProcessPID;
        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
     }
@@ -61,7 +61,7 @@ void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waiti
 }
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {
     if(lastKey+1>0) {
-      //  printf("Respond to Query DBmanager: %s\n",searchedName);
+        printf("Respond to Query DBmanager: %d\n",queryType);
         struct message sendSearchResult;
         int notReturnedKey = -1;
         int checkedRecordIndex=0;
@@ -77,7 +77,7 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
                 if(strcmp(DBtable[checkedRecordIndex].name,searchedName)==0){
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
-                    printf("return key: %d\n",checkedRecordIndex);
+                    printf("return keyyyy: %d\n",checkedRecordIndex);
                 }
             }
         }
@@ -98,7 +98,7 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
                     printf("return key: %d\n",checkedRecordIndex);
                 }
             }
-    printf("I am the Manager I request a query with type  and salary  searching for:  msg to \n");
+    //printf("I am the Manager I request a query with type  and salary  searching for:  msg to \n");
         }
         else if(queryType==QUERY_BY_LESS_THAN_SALARY) {
             for(;checkedRecordIndex<=lastKey;checkedRecordIndex++) {
@@ -141,8 +141,11 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
                 }
             }
         }
-        if (returnedKeyIndex>=0) {
+        if (returnedKeyIndex>0) {
             sendSearchResult.mtype=callingProcessID;
+
+            //to lock the array
+            sendSearchResult.queryKeys[returnedKeyIndex++]=-1;
 
             msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult)-sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
         }
@@ -196,7 +199,7 @@ void logDBManagerAdd(char *name, int salary)
     messageLoggerDBManager.PID = getpid();
     messageLoggerDBManager.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
-        printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %d____ %d\n",loggerMsgQIdDBManager,LoggerId);
+      //  printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %d____ %d\n",loggerMsgQIdDBManager,LoggerId);
     if(send_val!=-1)
     {
     }

@@ -1,16 +1,45 @@
-1591316382	I require to add mido with salary 20000
-1591316383	I require to add soso with salary 30000
-1591316384	I require to add mohamed_4 with salary 20000
-1591316385	I require to add ahmed_4 with salary 30000
-1591316388	I acquire key: 1
-1591316389	I acquire key: 0
-1591316390	I require to modify key: 0 with value 10000
-1591316391	I require to modify key: 1 with value -10000
-1591316392	I release key: 1
-1591316393	I release key: 0
-1591316394	I acquire key: 2
-1591316395	I acquire key: 3
-1591316396	I require to modify key: 2 with value 10000
-1591316397	I require to modify key: 3 with value -10000
-1591316398	I release key: 2
-1591316399	I release key: 3
+1591327974	I am DBManager I added mido with salary 20000
+1591327976	I require to add soso with salary 30000
+1591328074	I require to add mido with salary 20000
+1591328145	I require to add mido with salary 20000
+1591328147	I require to add soso with salary 30000
+1591328149	I require to add mohamed_4 with salary 20000
+1591328151	I require to add ahmed_4 with salary 30000
+1591328204	I require to add mido with salary 20000
+1591328206	I require to add soso with salary 30000
+1591328208	I require to add mohamed_4 with salary 20000
+1591328923	I require to add mido with salary 20000
+1591328925	I require to add soso with salary 30000
+1591328927	I require to add mohamed_4 with salary 20000
+1591328929	I require to add ahmed_4 with salary 30000
+1591328935	I acquire key: 1
+1591328937	I acquire key: 0
+1591328939	I require to modify key: 0 with value 10000
+1591328941	I require to modify key: 1 with value -10000
+1591328943	I release key: 1
+1591328945	I release key: 0
+1591328947	I acquire key: 2
+1591328949	I acquire key: 3
+1591328951	I require to modify key: 2 with value 10000
+1591328953	I require to modify key: 3 with value -10000
+1591328955	I release key: 2
+1591328957	I release key: 3
+1591329035	I require to add mido with salary 20000
+1591329037	I require to add soso with salary 30000
+1591329039	I require to add mohamed_4 with salary 20000
+1591329055	I require to add mido with salary 20000
+1591329057	I require to add soso with salary 30000
+1591329059	I require to add mohamed_4 with salary 20000
+1591329061	I require to add ahmed_4 with salary 30000
+1591329067	I acquire key: 1
+1591329069	I acquire key: 0
+1591329071	I require to modify key: 0 with value 10000
+1591329073	I require to modify key: 1 with value -10000
+1591329075	I release key: 1
+1591329077	I release key: 0
+1591329079	I acquire key: 2
+1591329081	I acquire key: 3
+1591329083	I require to modify key: 2 with value 10000
+1591329085	I require to modify key: 3 with value -10000
+1591329087	I release key: 2
+1591329089	I release key: 3

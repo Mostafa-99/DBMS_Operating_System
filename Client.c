@@ -1,9 +1,9 @@
 #include "Client.h"
 
-void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived)
+void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived, int queryLoggerMsgQIdReceived)
 {
 
-    initializeClient(DBManagerIdReceived, QueryLoggerIdReceived, sharedMemoryIdReceived, clientDBManagerMsgQIdReceived, clientNumberReceived, DBSharedMemoryIdReceived, loggerMsgQIdReceived, LoggerIdReceived);
+    initializeClient(DBManagerIdReceived, QueryLoggerIdReceived, sharedMemoryIdReceived, clientDBManagerMsgQIdReceived, clientNumberReceived, DBSharedMemoryIdReceived, loggerMsgQIdReceived, LoggerIdReceived,queryLoggerMsgQIdReceived);
     openConfigurationFile();
     char *readWordFromFile = "1";
     while (readWordFromFile != NULL)
@@ -60,9 +60,8 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             {
 
             }*/
-            sendToQueryLogger();
         }
-        sleep(1);
+        sleep(2);
     }
     fclose(fp);
     exit(1);
@@ -125,7 +124,7 @@ void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searc
         *searchedSalary = atoi(readConfigurationFile());
     }
 }
-void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived)
+void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived,int queryLoggerMsgQIdReceived)
 {
     DBManagerId = DBManagerIdReceived;
     QueryLoggerId = QueryLoggerIdReceived;
@@ -138,6 +137,7 @@ void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sh
     loggerMsgQIdClient = loggerMsgQIdReceived;
     clientLogger = (struct Log *)shmat(sharedMemoryId, (void *)0, 0);
     LoggerId = LoggerIdReceived;
+    queryLoggerMsgQIdClient=queryLoggerMsgQIdReceived;
 }
 void openConfigurationFile()
 {
@@ -225,7 +225,7 @@ void requestToModify(int key, int modification, int value)
     }
     else
     {
-    printf("I am child: %d and I am client number: %d, I require to modify key: %d, modification: %d, with value %d \n", getpid(), clientNumber, key, modification, value);
+  //  printf("I am child: %d and I am client number: %d, I require to modify key: %d, modification: %d, with value %d \n", getpid(), clientNumber, key, modification, value);
         logModify(key, modification, value);
     }
 }
@@ -282,7 +282,7 @@ void requestToAcquire(int key)
 
         if(rec!=-1)
         {
-        printf("Acquire doneeeeeeeeeeeeeeeeeeeeeeee \n");
+      //  printf("Acquire doneeeeeeeeeeeeeeeeeeeeeeee \n");
             logAcquire(key);
         }
     }
@@ -329,7 +329,7 @@ void requestToRelease(int key)
     }
     else
     {
-    printf("I am child: %d and I am client number: %d, I release key %d llllllllllllllllllllllllllllllllllllllllll\n", getpid(), clientNumber, send_val);
+   // printf("I am child: %d and I am client number: %d, I release key %d llllllllllllllllllllllllllllllllllllllllll\n", getpid(), clientNumber, send_val);
         logRelease(key);
     }
 }
@@ -360,7 +360,7 @@ void logRelease(int key)
     
     /*raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    printf("I am child: %d and I am client number: %d, I release key %d kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk\n", getpid(), &messageClient, clientDBManagerMsgQId);
+   // printf("I am child: %d and I am client number: %d, I release key %d kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk\n", getpid(), &messageClient, clientDBManagerMsgQId);
 
 }
 void requestToQuery(int queryType, int searchedSalary, char **searchedString)
@@ -376,10 +376,10 @@ void requestToQuery(int queryType, int searchedSalary, char **searchedString)
     messageClient.callingProcessID = getpid();
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     
-    struct message messageClient2;
-    printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
-    int rec= msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
-    printf("key %d \n",messageClient2.queryKeys[0]);
+    //struct message messageClient2;
+    //printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+    int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
+    printf("key %d \n",messageClient.queryType);
     if (rec == -1)
     {
         perror("error in send msg");
@@ -387,6 +387,7 @@ void requestToQuery(int queryType, int searchedSalary, char **searchedString)
     else
     {
         logQuery();
+        sendToQueryLogger();
     }
 }
 void logQuery()
@@ -416,7 +417,36 @@ void logQuery()
 }
 void sendToQueryLogger()
 {
-    //printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz %d \n",messageClient.queryKeys[99]);
+    //dynamic alloc is here
+   for(int i=0;i<100;i++)
+    {
+       if( messageClient.queryKeys[i]==-1)
+        {
+
+            break;
+        }
+        printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz  break  %d  __ %d __ %d\n",messageClient.queryKeys[i],getpid(),i);
+    }
+     printf("querryyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \n");
+    
+    //set size
+   
+    char clientNumberString[5];
+    char message[MAXCHAR]="I am client number: ";
+
+    sprintf(clientNumberString, "%d", clientNumber);
+    strcat(message,clientNumberString);
+
+    char msgArray[MAXCHAR] = " I requested a query ";
+    strcat(message, msgArray);
+    //need switch case for query type
+
+    strcpy(queryLoggerMsgQClient.message,message);
+    queryLoggerMsgQClient.mtype=QueryLoggerId;
+    //set point and dynamic alloc
+
+    send_val = msgsnd(queryLoggerMsgQIdClient, &queryLoggerMsgQClient, sizeof(queryLoggerMsgQClient) - sizeof(queryLoggerMsgQClient.mtype), !IPC_NOWAIT);
+
 }
 void handlingSIGUSR1_and_IgnoringSigStop()
 {
