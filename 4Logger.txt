@@ -1,0 +1,12 @@
+1591316382	I require to add mido77 with salary 20000
+1591316383	I require to add soso77 with salary 30000
+1591316384	I require to add mohamed_45 with salary 20000
+1591316385	I require to add ahmed_45 with salary 30000
+1591316392	I acquire key: 1
+1591316393	I acquire key: 0
+1591316394	I require to modify key: 0 with value 10000
+1591316395	I require to modify key: 1 with value -10000
+1591316396	I release key: 1
+1591316397	I release key: 0
+1591316402	I acquire key: 2
+1591316403	I acquire key: 3

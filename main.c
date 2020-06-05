@@ -16,7 +16,7 @@ void main()
     {   int stat_loc;
         initializeSharedRecources();
         roleIdentification();
-        sleep(80);
+        sleep(10);
         // add wait for exit code
         for(int i=0;i<NUMBER_OF_CLIENTS;i++)
         {
@@ -51,7 +51,7 @@ void do_child()
         //printf("Role Message received I am child: %d and I am %s \n",getpid(),message.role);
         if(message.role=="DBManager")
         {
-            do_DBManager(message.sharedMemoryId,message.clientDBManagerMsgQId, message.DBSharedMemoryId,message.processesLoggerMsgQId);
+            do_DBManager(message.sharedMemoryId,message.clientDBManagerMsgQId, message.DBSharedMemoryId,message.processesLoggerMsgQId,message.LoggerId);
         }
         else if(message.role=="QueryLogger")
         {

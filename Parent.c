@@ -51,6 +51,7 @@ void roleIdentification()
             message.clientDBManagerMsgQId=clientDBManager_msgqid;
             message.DBSharedMemoryId=DBSharedMemoryId;
             message.processesLoggerMsgQId=processesLogger_msgqid;
+            message.LoggerId=processesIds[LOGGER_INDEX];
         }
         else if(i==QUERY_LOGGER_INDEX) //QueryLogger
         {

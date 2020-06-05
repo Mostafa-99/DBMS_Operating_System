@@ -7,7 +7,7 @@ int respondToAdd(char* name, int salary, int lastKey)
     newRecord.salary = salary;
     newRecord.key = lastKey+1;
     DBtable[lastKey+1]=newRecord;
-  //  printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
+    printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
     return lastKey+1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
@@ -20,7 +20,7 @@ void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
       //  printf("New record will be modified from DB with name: %s and Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         DBtable[currentIndex].salary += modificationValue;
         if(DBtable[currentIndex].salary < lowerLimit) DBtable[currentIndex].salary = lowerLimit;
-       // printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
+        printf("New record modified succ in DB with name: %s and new Salary: %d with key: %d \n",DBtable[currentIndex].name,DBtable[currentIndex].salary,currentIndex);
         //respondToRelease(keyOfTheRecordToBeModified,pointersOfWaitingQueuesForRecordKeys[keyOfTheRecordToBeModified]);
     }
 
@@ -31,38 +31,32 @@ void respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct wait
     {
        //  printf("Respond Acquire:add to queue DBmanager\n");
         addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
-        printf("Process:%d wanted key: %d but added to waiting queue\n",CallingProccessPID,requiredRecordKey);
     }
     else
     {
         DBsemaphores[requiredRecordKey] = SEMAPHORE_OCCUPIED;
-        printf("Semaphore %d is now occupied by %d\n",requiredRecordKey,CallingProccessPID);
         //kill(CallingProccessPID,SIGUSR1);
-        sentMessageToClient.mtype=CallingProccessPID;
-        sentMessageToClient.destinationProcess = MESSAGE_TYPE_NO_SLEEP; 
-        msgsnd(messageQueueID, &sentMessageToClient, sizeof(sentMessageToClient)-sizeof(sentMessageToClient.mtype), !IPC_NOWAIT);
-        kill(CallingProccessPID,SIGCONT);
-     //   printf("Respond Acquire:Semaphore available DBmanager\n");
+       // kill(CallingProccessPID,SIGCONT);
+        receivedMessage.mtype=CallingProccessPID;
+        msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
+        printf("Respond Acquire:Semaphore available DBmanager\n");
 
     }
 }
 void respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey)
 {
+
     printf("Semaphore %d is now released\n",releasedRecordKey);
     DBsemaphores[releasedRecordKey] = SEMAPHORE_AVAILABLE;
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueOfThePassedKey);
     if(releasedProcessPID!=-1)
     {
-        kill(releasedProcessPID,SIGCONT);
+       // kill(releasedProcessPID,SIGCONT);
         printf("process %d returned from the wait\n",releasedProcessPID);
+          receivedMessage.mtype=releasedProcessPID;
+       msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
     }
 
-    /*receivedMessage.mtype=releasedProcessPID;
-    if(releasedProcessPID!=-1)
-    {
-       msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage)-sizeof(receivedMessage.mtype), !IPC_NOWAIT);
-       // printf("Respond to Release DBmanager\n");
-    }*/
 
 }
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int callingProcessID) {
@@ -155,17 +149,22 @@ void respondToQuery(int queryType, int searchedSalary, char* searchedName, int c
     }
     
 }
-void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived, int loggerMsgQIdReceived){
+void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,int DBSharedMemoryIdReceived, int loggerMsgQIdReceived,int LoggerIdReceived){
     messageQueueID=messageQueueIdReceived;
     DBManagerPID = getpid();
     sharedMemoryId = sharedMemoryIdReceived;
     memset(DBsemaphores, SEMAPHORE_AVAILABLE, MAX_NUMBER_OF_RECORDS);
     DBtable = (struct DBrecord *)shmat(DBSharedMemoryIdReceived, (void *)0, 0);
     loggerMsgQIdDBManager=loggerMsgQIdReceived;
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+
+    DBManagerLogger = (struct Log *)shmat(sharedMemoryId, (void *)0, 0);
+    LoggerId = LoggerIdReceived;
+
 }
-void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived)
+void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived,int LoggerIdReceived)
 {
-    initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived,loggerMsgQIdReceived);
+    initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived,loggerMsgQIdReceived,LoggerIdReceived);
     while(1)
     {
         msgrcv(messageQueueID, &receivedMessage,(sizeof(receivedMessage) - sizeof(receivedMessage.mtype)),DBManagerPID,!IPC_NOWAIT);
@@ -173,6 +172,7 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
         if(messageType == MESSAGE_TYPE_ADD) {
             lastKey = respondToAdd(receivedMessage.name,receivedMessage.salary,lastKey);
             pointersOfWaitingQueuesForRecordKeys[lastKey] = createWaitingQueue();
+            logDBManagerAdd(receivedMessage.name,receivedMessage.salary);
         }
         else if (messageType == MESSAGE_TYPE_MODIFY) {
             respondToModify(receivedMessage.key, receivedMessage.modification);
@@ -187,4 +187,38 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
             respondToQuery(receivedMessage.queryType, receivedMessage.searchedSalary, receivedMessage.searchedString, receivedMessage.callingProcessID);
         }
     }
+}
+
+void logDBManagerAdd(char *name, int salary)
+{
+    int send_val;
+    messageLoggerDBManager.mtype = LoggerId;
+    messageLoggerDBManager.PID = getpid();
+    messageLoggerDBManager.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    send_val = msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
+        printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %d____ %d\n",loggerMsgQIdDBManager,LoggerId);
+    if(send_val!=-1)
+    {
+    }
+
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
+
+    char DBManagerNumberString[5];
+    sprintf(DBManagerNumberString, "%d", 0);
+    strcpy(DBManagerLogger->number, DBManagerNumberString);
+
+    char msgArray[MAXCHAR] = "I am DBManager I added ";
+    strcat(msgArray, name);
+
+    char salaryString[MAXCHAR];
+    sprintf(salaryString, "%d", salary);
+
+    strcat(msgArray, " with salary ");
+    strcat(msgArray, salaryString);
+    strcpy(DBManagerLogger->message, msgArray);
+    messageLoggerDBManager.destinationProcess = MESSAGE_TYPE_RELEASE;
+    send_val = msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
+    
+    
 }

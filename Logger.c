@@ -33,8 +33,18 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
 {
     FILE *fileOpened;
     char fileToOpen[80];
-    strcpy(fileToOpen, loggerSharedMemory->number);
-    strcat(fileToOpen,"Logger.txt");
+    if(strcmp(loggerSharedMemory->number, "0") == 0)
+    {
+        strcpy(fileToOpen, "DBLogger.txt");
+    }
+    else
+    {
+        /* code */
+        strcpy(fileToOpen, loggerSharedMemory->number);
+        strcat(fileToOpen,"Logger.txt");
+    }
+    
+    
 
     fileOpened = fopen(fileToOpen, "a"); //opening file  a
     if (fileOpened == NULL)
@@ -50,9 +60,18 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
     }
     fflush(fileOpened);
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueForLoggerSharedMemory);
-    if(releasedProcessPID==-1)
-    loggerSemaphore = SEMAPHORE_AVAILABLE;
-    kill(releasedProcessPID, SIGCONT);
+        loggerSemaphore = SEMAPHORE_AVAILABLE;
+   
+    if(releasedProcessPID!=-1)
+    {
+        kill(releasedProcessPID, SIGUSR1);
+        kill(releasedProcessPID, SIGCONT);
+    }
+    
+    printf("Logg done wakeup next\n");
+    
+      
+        
    // if(releasedProcessPID)printf("release logger wake up: %d\n",releasedProcessPID);
 }
 void respondToAcquireLogger(int PID)
@@ -61,7 +80,7 @@ void respondToAcquireLogger(int PID)
     {
         loggerSemaphore = SEMAPHORE_OCCUPIED;
        // printf("Available: I am the logger wake up %d \n",PID);
-        //kill(PID,SIGUSR1);
+        kill(PID,SIGUSR1);
         kill(PID, SIGCONT);
     }
     else

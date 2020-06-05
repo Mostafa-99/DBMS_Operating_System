@@ -1,10 +1,7 @@
-add saad 20000
-add sa3dia 30000
-acquire 3
-modify 3 + 10000
-release 3
-add mohamed_3 20000
-add ahmed_3 30000
+add mido77 20000
+add soso77 30000
+add mohamed_45 20000
+add ahmed_45 30000
 acquire 1
 acquire 0
 modify 0 + 10000

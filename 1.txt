@@ -6,16 +6,9 @@ modify 0 + 10000
 modify 1 - 10000
 release 1
 release 0
-query name exact ahmed
 acquire 1
 acquire 0
 modify 0 + 10000
 modify 1 - 10000
 release 1
 release 0
-acquire 2
-acquire 3
-modify 2 + 10000
-modify 3 - 10000
-release 2
-release 3

@@ -1,22 +1,16 @@
-1591292758	I require to add mido with salary 20000
-1591292763	I require to add soso with salary 30000
-1591292768	I require to add mohamed_4 with salary 20000
-1591292773	I require to add ahmed_4 with salary 30000
-1591292778	I acquire key: 1
-1591292783	I acquire key: 0
-1591292788	I require to modify key: 0 with value 10000
-1591292793	I require to modify key: 1 with value -10000
-1591292798	I release key: 1
-1591292803	I release key: 0
-1591292808	I acquire key: 2
-1591292813	I acquire key: 3
-1591292818	I require to modify key: 2 with value 10000
-1591292823	I require to modify key: 3 with value -10000
-1591292828	I release key: 2
-1591292833	I release key: 3
-1591292843	I acquire key: 1
-1591292853	I acquire key: 0
-1591292858	I require to modify key: 0 with value 10000
-1591292863	I require to modify key: 1 with value -10000
-1591292868	I release key: 1
-1591292873	I release key: 0
+1591316382	I require to add mido with salary 20000
+1591316383	I require to add soso with salary 30000
+1591316384	I require to add mohamed_4 with salary 20000
+1591316385	I require to add ahmed_4 with salary 30000
+1591316388	I acquire key: 1
+1591316389	I acquire key: 0
+1591316390	I require to modify key: 0 with value 10000
+1591316391	I require to modify key: 1 with value -10000
+1591316392	I release key: 1
+1591316393	I release key: 0
+1591316394	I acquire key: 2
+1591316395	I acquire key: 3
+1591316396	I require to modify key: 2 with value 10000
+1591316397	I require to modify key: 3 with value -10000
+1591316398	I release key: 2
+1591316399	I release key: 3
