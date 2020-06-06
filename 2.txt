@@ -18,5 +18,5 @@ modify 3 - 10000
 release 2
 release 3
 query full
-query name startswith a
+query name startswith mi
 query name exact ahmed

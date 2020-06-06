@@ -6,15 +6,16 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
     initializeClient(DBManagerIdReceived, QueryLoggerIdReceived, sharedMemoryIdReceived, clientDBManagerMsgQIdReceived, clientNumberReceived, DBSharedMemoryIdReceived, loggerMsgQIdReceived, LoggerIdReceived, queryLoggerMsgQIdReceived);
     openConfigurationFile();
     char *readWordFromFile = "1";
-    while (readWordFromFile != NULL)
+    while (readWordFromFile != NO_WORD)
     {
+        printf("Client %d is still alive\n",clientNumber);
         readWordFromFile = readConfigurationFile();
-        if (readWordFromFile == NULL)
+        if (readWordFromFile == NO_WORD)
         {
             break;
         }
 
-        if (strcmp(readWordFromFile, "add") == 0)
+        if (strcmp(readWordFromFile, "add") == IDENTICAL_WORDS)
         {
             char name[MAXCHAR];
             strcpy(name, readConfigurationFile());
@@ -22,30 +23,30 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
             strcpy(salary, readConfigurationFile());
             requestToAdd(name, atoi(salary));
         }
-        else if (strcmp(readWordFromFile, "modify") == 0)
+        else if (strcmp(readWordFromFile, "modify") == IDENTICAL_WORDS)
         {
             char key[MAXCHAR];
             strcpy(key, readConfigurationFile());
             char modification[MAXCHAR];
             strcpy(modification, readConfigurationFile());
-            int sign = strcmp(modification, "+") == 0 ? ADD_MODIFICATION : SUBTRACT_MODIFICATION;
+            int sign = strcmp(modification, "+") == IDENTICAL_WORDS ? ADD_MODIFICATION : SUBTRACT_MODIFICATION;
             char value[MAXCHAR];
             strcpy(value, readConfigurationFile());
             requestToModify(atoi(key), sign, atoi(value));
         }
-        else if (strcmp(readWordFromFile, "acquire") == 0)
+        else if (strcmp(readWordFromFile, "acquire") == IDENTICAL_WORDS)
         {
             char key[MAXCHAR];
             strcpy(key, readConfigurationFile());
             requestToAcquire(atoi(key));
         }
-        else if (strcmp(readWordFromFile, "release") == 0)
+        else if (strcmp(readWordFromFile, "release") == IDENTICAL_WORDS)
         {
             char key[MAXCHAR];
             strcpy(key, readConfigurationFile());
             requestToRelease(atoi(key));
         }
-        else if (strcmp(readWordFromFile, "query") == 0)
+        else if (strcmp(readWordFromFile, "query") == IDENTICAL_WORDS)
         {
             int queryType, searchedSalary;
             char *searchedString;
@@ -54,65 +55,65 @@ void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMem
         }
         sleep(1);
     }
-    fclose(fp);
+    fclose(filePointer);
     exit(1);
 }
 void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searchedString)
 {
 
     char *queryNameType = readConfigurationFile();
-    if (strcmp(queryNameType, "full") == 0)
+    if (strcmp(queryNameType, "full") == IDENTICAL_WORDS)
     {
         *queryType = QUERY_BY_FULL_TABLE;
         *searchedString = NULL;
         *searchedSalary = 0;
     }
-    else if (strcmp(queryNameType, "name") == 0)
+    else if (strcmp(queryNameType, "name") == IDENTICAL_WORDS)
     {
         queryNameType = readConfigurationFile();
-        if (strcmp(queryNameType, "startswith") == 0)
+        if (strcmp(queryNameType, "startswith") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_PART_OF_NAME;
             *searchedString = readConfigurationFile();
         }
-        else if (strcmp(queryNameType, "exact") == 0)
+        else if (strcmp(queryNameType, "exact") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_EXACT_NAME;
             *searchedString = readConfigurationFile();
         }
         *searchedSalary = 0;
     }
-    else if (strcmp(queryNameType, "salary") == 0)
+    else if (strcmp(queryNameType, "salary") == IDENTICAL_WORDS)
     {
         queryNameType = readConfigurationFile();
-        if (strcmp(queryNameType, "exact") == 0)
+        if (strcmp(queryNameType, "exact") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_EXACT_SALARY;
         }
-        else if (strcmp(queryNameType, ">") == 0)
+        else if (strcmp(queryNameType, ">") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_GREATER_THAN_SALARY;
         }
-        else if (strcmp(queryNameType, "<") == 0)
+        else if (strcmp(queryNameType, "<") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_LESS_THAN_SALARY;
         }
-        else if (strcmp(queryNameType, ">=") == 0)
+        else if (strcmp(queryNameType, ">=") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY;
         }
-        else if (strcmp(queryNameType, "<=") == 0)
+        else if (strcmp(queryNameType, "<=") == IDENTICAL_WORDS)
         {
             *queryType = QUERY_BY_LESS_THAN_OR_EQUAL_SALARY;
         }
 
         *searchedSalary = atoi(readConfigurationFile());
     }
-    else if (strcmp(queryNameType, "hybrid") == 0)
+    else if (strcmp(queryNameType, "hybrid") == IDENTICAL_WORDS)
     {
         *queryType = QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID;
         *searchedString = readConfigurationFile();
-       // *searchedSalary = atoi(readConfigurationFile());
+        // *searchedSalary = atoi(readConfigurationFile());
     }
 }
 void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived, int queryLoggerMsgQIdReceived)
@@ -135,18 +136,17 @@ void openConfigurationFile()
     char buffer[50];
     sprintf(buffer, "%d", clientNumber);
     filename = strcat(buffer, ".txt");
-    fp = fopen(filename, "r");
+    filePointer = fopen(filename, "r");
 }
 char *readConfigurationFile()
 {
     //read config
-    if (fp == NULL)
+    if (filePointer == NULL)
     {
-        printf("Could not open file %s\n", filename);
-        return 0;
+        return ERROR_IN_OPEN;
     }
 
-    if (fscanf(fp, "%s", word) != EOF)
+    if (fscanf(filePointer, "%s", word) != EOF)
     {
         return word;
     }
@@ -157,13 +157,13 @@ char *readConfigurationFile()
 }
 void requestToAdd(char *name, int salary)
 {
-    messageClient.destinationProcess = MESSAGE_TYPE_ADD;
+    messageClient.requestedAction = MESSAGE_TYPE_ADD;
     strcpy(messageClient.name, name);
     messageClient.salary = salary;
     messageClient.callingProcessID = getpid();
     messageClient.mtype = DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    if (send_val == -1)
+    if (send_val == ERROR_IN_RECEIVE)
     {
         perror("error in send msg");
     }
@@ -176,7 +176,7 @@ void logAdd(char *name, int salary)
 {
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
 
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
@@ -196,20 +196,20 @@ void logAdd(char *name, int salary)
     strcat(msgArray, " with salary ");
     strcat(msgArray, salaryString);
     strcpy(clientLogger->message, msgArray);
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 }
 void requestToModify(int key, int modification, int value)
 {
-    messageClient.destinationProcess = MESSAGE_TYPE_MODIFY;
+    messageClient.requestedAction = MESSAGE_TYPE_MODIFY;
     messageClient.key = key;
     messageClient.modification = value * modification;
     messageClient.callingProcessID = getpid();
     messageClient.mtype = DBManagerId;
 
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    if (send_val == -1)
+    if (send_val == ERROR_IN_RECEIVE)
     {
         perror("error in send msg");
     }
@@ -222,7 +222,7 @@ void logModify(int key, int modification, int value)
 {
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     raise(SIGTSTP);
@@ -242,24 +242,28 @@ void logModify(int key, int modification, int value)
     strcat(msgArray, " with value ");
     strcat(msgArray, valueString);
     strcpy(clientLogger->message, msgArray);
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 }
 void requestToAcquire(int key)
 {
-    messageClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
     messageClient.key = key;
     messageClient.callingProcessID = getpid();
     messageClient.mtype = DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    if (send_val == -1)
+    if (send_val == ERROR_IN_RECEIVE)
     {
         perror("error in send msg");
     }
     else
     {
-        struct message messageClient2;
+        signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+        raise(SIGTSTP);
+        signal(SIGTSTP, SIG_DFL);
+        logAcquire(key);
+        /*struct message messageClient2;
         int rec = msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
 
         if (rec != -1)
@@ -269,14 +273,14 @@ void requestToAcquire(int key)
         else
         {
             perror("error in send msg");
-        }
+        }*/
     }
 }
 void logAcquire(int key)
 {
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     raise(SIGTSTP);
@@ -291,18 +295,18 @@ void logAcquire(int key)
     strcat(msgArray, keyString);
 
     strcpy(clientLogger->message, msgArray);
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 }
 void requestToRelease(int key)
 {
-    messageClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageClient.key = key;
     messageClient.callingProcessID = getpid();
     messageClient.mtype = DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    if (send_val == -1)
+    if (send_val == ERROR_IN_RECEIVE)
     {
         perror("error in send msg");
     }
@@ -315,7 +319,7 @@ void logRelease(int key)
 {
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     raise(SIGTSTP);
@@ -330,30 +334,28 @@ void logRelease(int key)
     strcat(msgArray, keyString);
 
     strcpy(clientLogger->message, msgArray);
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
-  }
+}
 void requestToQuery(int queryType, int searchedSalary, char **searchedString)
 {
-    messageClient.destinationProcess = MESSAGE_TYPE_QUERY;
+    messageClient.requestedAction = MESSAGE_TYPE_QUERY;
     messageClient.queryType = queryType;
     messageClient.searchedSalary = searchedSalary;
     messageClient.mtype = DBManagerId;
-    if (*searchedString != NULL)
+    if (*searchedString != NO_WORD)
     {
         strcpy(messageClient.searchedString, *searchedString);
     }
     messageClient.callingProcessID = getpid();
     send_val = -1;
-    while (send_val == -1)
+    while (send_val == ERROR_IN_RECEIVE)
     {
         send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     }
-    if (send_val != -1)
+    if (send_val != ERROR_IN_RECEIVE)
     {
-
     }
     else
     {
@@ -363,7 +365,7 @@ void requestToQuery(int queryType, int searchedSalary, char **searchedString)
     //struct message messageClient2;
     int rec = msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
 
-    if (rec == -1)
+    if (rec == ERROR_IN_RECEIVE)
     {
         perror("error in send msg");
     }
@@ -377,7 +379,7 @@ void logQuery()
 {
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     raise(SIGTSTP);
@@ -389,10 +391,9 @@ void logQuery()
     char msgArray[MAXCHAR] = "I requested a query ";
 
     strcpy(clientLogger->message, msgArray);
-    messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.requestedAction = MESSAGE_TYPE_RELEASE;
     messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
-
 }
 void sendToQueryLogger(int queryType)
 {
@@ -452,22 +453,16 @@ void sendToQueryLogger(int queryType)
     strcpy(queryLoggerMsgQClient.message, message);
     queryLoggerMsgQClient.mtype = QueryLoggerId;
     queryLoggerMsgQClient.PID = getpid();
-    queryLoggerMsgQClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    queryLoggerMsgQClient.requestedAction = MESSAGE_TYPE_ACQUIRE;
 
-    printf("***************************************************************************************client send \n");
     send_val = msgsnd(queryLoggerMsgQIdClient, &queryLoggerMsgQClient, sizeof(queryLoggerMsgQClient) - sizeof(queryLoggerMsgQClient.mtype), !IPC_NOWAIT);
     int rec = msgrcv(queryLoggerMsgQIdClient, &queryLoggerMsgQClient, (sizeof(queryLoggerMsgQClient) - sizeof(queryLoggerMsgQClient.mtype)), getpid(), !IPC_NOWAIT);
-    printf("----------------------------------------------------------------------client rec \n");
 
     FILE *fileOpened;
     char fileToOpen[80];
     fileOpened = fopen("QueryLogger.txt", "a"); //opening file  a
 
-    if (fileOpened == NULL)
-    {
-        printf("unable to open file\n");
-    }
-    else
+    if (fileOpened != FILE_ERROR)
     {
 
         fprintf(fileOpened, "---------------------------------------------------------------------------------------------------------\n");
@@ -496,15 +491,11 @@ void sendToQueryLogger(int queryType)
     fflush(fileOpened);
 
     queryLoggerMsgQClient.mtype = QueryLoggerId;
-    queryLoggerMsgQClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    queryLoggerMsgQClient.requestedAction = MESSAGE_TYPE_RELEASE;
 
     send_val = msgsnd(queryLoggerMsgQIdClient, &queryLoggerMsgQClient, sizeof(queryLoggerMsgQClient) - sizeof(queryLoggerMsgQClient.mtype), !IPC_NOWAIT);
     if (send_val == -1)
     {
         perror("error in send msg");
     }
-}
-void handlingSIGUSR1_and_IgnoringSigStop()
-{
-    signal(SIGTSTP, SIG_IGN);
 }

@@ -3,19 +3,25 @@ add ahmed 30000
 acquire 1
 acquire 0
 modify 0 + 10000
-modify 1 - 10000
+modify 1 - 20000
 release 1
 release 0
 acquire 1
 acquire 0
-modify 0 + 10000
+modify 0 + 20000
 modify 1 - 10000
 release 1
 release 0
 query full
-query salary exact 30000
-query salary > 30000
-query salary < 30000
-query salary >= 30000
-query salary <= 30000
-query hybrid ahmed 30000
+query salary exact 20000
+query salary > 20000
+query salary < 20000
+query salary >= 20000
+query salary <= 20000
+query hybrid ahmed 20000
+acquire 1
+acquire 0
+modify 0 + 10000
+modify 1 - 20000
+release 1
+release 0

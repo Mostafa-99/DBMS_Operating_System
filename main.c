@@ -1,6 +1,4 @@
-//#include "declarations.c"
-#include "Semaphores.h"
-#include "Parent.c"
+#include "GlobalIncludes.c"
 #include "DBManager.c"
 #include "Client.c"
 #include "Logger.c"
@@ -14,13 +12,13 @@ void main()
     numberOfClients=readConfigurationFileParent();
     pid_t pid;
     pid= forkAllChildren(numberOfClients);
-    if(pid!=0) //Parent
+    if(pid!=CHILD_FORK_RETURN) //Parent
     {   int stat_loc;
         initializeSharedRecources();
         roleIdentification();
         sleep(10);
         // add wait for exit code
-        for(int i=0;i<numberOfClients;i++)
+        for(int indexOfClient=0;indexOfClient<numberOfClients;indexOfClient++)
         {
            pid = wait(&stat_loc);
         }
@@ -45,7 +43,7 @@ void do_child()
     /* receive all types of messages */
     rec_val = msgrcv(msgqid, &message, sizeof(message)-sizeof(message.mtype), getpid(), !IPC_NOWAIT);  
     
-    if(rec_val == -1)
+    if(rec_val == ERROR_IN_RECEIVE)
     {
         perror("Error in receive");
     }

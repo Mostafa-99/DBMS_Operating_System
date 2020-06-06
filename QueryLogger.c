@@ -10,11 +10,11 @@ void do_queryLogger(int queryLoggerMsgQIdReceived)
     int rec = msgrcv(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, (sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype)), getpid(), !IPC_NOWAIT);
      // printf("***************************************************************************************QueryLogger rec\n");
 
-    if (queryLoggerMsgQProccess.destinationProcess == MESSAGE_TYPE_ACQUIRE)
+    if (queryLoggerMsgQProccess.requestedAction == MESSAGE_TYPE_ACQUIRE)
     {
       respondToAcquireQueryLogger(queryLoggerMsgQProccess.PID);
     }
-    else if (queryLoggerMsgQProccess.destinationProcess == MESSAGE_TYPE_RELEASE)
+    else if (queryLoggerMsgQProccess.requestedAction == MESSAGE_TYPE_RELEASE)
     {
       respondToReleaseQueryLogger(&waitingQueueForQueryLogger);
     }
@@ -30,7 +30,7 @@ void respondToReleaseQueryLogger(struct waitingQueue *waitingQueueForQueryLogger
 
   int releasedProcessPID = removeFromWaitingQueue(waitingQueueForQueryLogger);
 
-  if (releasedProcessPID != -1)
+  if (releasedProcessPID != NO_PROCESS_WAITING)
   {
     queryLoggerMsgQProccess.mtype = releasedProcessPID;
     //  printf("***************************************************************************************QueryLogger wake up from queue\n");

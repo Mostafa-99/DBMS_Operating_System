@@ -1,4 +1,3 @@
-
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -6,11 +5,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include<signal.h>
-#include <sys/shm.h> 
+#include <signal.h>
+#include <sys/shm.h>
 #include <sys/wait.h>
-    #include <sys/resource.h>
+#include <sys/resource.h>
 
+#define SEMAPHORE_OCCUPIED 0
+#define SEMAPHORE_AVAILABLE 1
+#define NO_NODE NULL
+#define BLOCK_YOURSELF 0
+#define UNBLOCK_YOURSELF 1
+#define NO_PROCESS_WAITING -1
 //----------------------------
 #define MESSAGE_TYPE_ADD 1
 #define MESSAGE_TYPE_MODIFY 2
@@ -28,10 +33,11 @@
 #define QUERY_BY_LESS_THAN_OR_EQUAL_SALARY 7
 #define QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID 8
 //----------------------------
-/*Logger shared memory*/
+#define TRUE_ 1
+#define NO_WORD NULL
+#define IDENTICAL_WORDS 0
 #define MAX_MEASSAGE_SIZE 420
 #define MAX_NUMBER_SIZE 2
-/*System info*/
 int messageQueueID;
-
 #define MAXCHAR 1000
+#define MAX_NUMBER_OF_RECORDS 1000
