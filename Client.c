@@ -112,8 +112,9 @@ void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searc
     else if (strcmp(queryNameType, "hybrid") == IDENTICAL_WORDS)
     {
         *queryType = QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID;
-        *searchedString = readConfigurationFile();
-        //*searchedSalary = atoi(readConfigurationFile());
+        int searchedSalaryTemp = atoi(readConfigurationFile());
+        *searchedString=readConfigurationFile();
+        *searchedSalary=searchedSalaryTemp;
     }
 }
 void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived, int queryLoggerMsgQIdReceived)
@@ -140,7 +141,6 @@ void openConfigurationFile()
 }
 char *readConfigurationFile()
 {
-    //read config
     if (filePointer == NULL)
     {
         return ERROR_IN_OPEN;
@@ -263,17 +263,6 @@ void requestToAcquire(int key)
         raise(SIGTSTP);
         signal(SIGTSTP, SIG_DFL);
         logAcquire(key);
-        /*struct message messageClient2;
-        int rec = msgrcv(clientDBManagerMsgQId, &messageClient2, (sizeof(messageClient2) - sizeof(messageClient2.mtype)), getpid(), !IPC_NOWAIT);
-
-        if (rec != -1)
-        {
-            logAcquire(key);
-        }
-        else
-        {
-            perror("error in send msg");
-        }*/
     }
 }
 void logAcquire(int key)
@@ -362,7 +351,6 @@ void requestToQuery(int queryType, int searchedSalary, char **searchedString)
 
         perror("error in send msg");
     }
-    //struct message messageClient2;
     int rec = msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
 
     if (rec == ERROR_IN_RECEIVE)
@@ -460,7 +448,7 @@ void sendToQueryLogger(int queryType)
 
     FILE *fileOpened;
     char fileToOpen[80];
-    fileOpened = fopen("QueryLogger.txt", "a"); //opening file  a
+    fileOpened = fopen("QueryLogger.txt", "a");
 
     if (fileOpened != FILE_ERROR)
     {
@@ -468,7 +456,7 @@ void sendToQueryLogger(int queryType)
         fprintf(fileOpened, "---------------------------------------------------------------------------------------------------------\n");
         fprintf(fileOpened, "%-15s", "Query  ");
         fprintf(fileOpened, "%-15lu", (unsigned long)time(NULL));
-        fprintf(fileOpened, "%-15s", message); //writing data into file
+        fprintf(fileOpened, "%-15s", message);
         fprintf(fileOpened, "\n");
         fprintf(fileOpened, "****************************************************\n");
 

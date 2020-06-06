@@ -8,9 +8,8 @@ void initializeLogger(int sharedMemoryIdReceived, int processesLoggerMsgQIdRecei
 void do_logger(int sharedMemoryIdReceived, int processesLoggerMsgQIdReceived)
 {
     initializeLogger(sharedMemoryIdReceived, processesLoggerMsgQIdReceived);
-    while (1)
+    while (TRUE_)
     {
-
         msgrcv(processesLoggerMsgQId, &loggerMsgQLogger, (sizeof(loggerMsgQLogger) - sizeof(loggerMsgQLogger.mtype)), getpid(), !IPC_NOWAIT);
         if (loggerMsgQLogger.requestedAction == MESSAGE_TYPE_ACQUIRE)
         {
@@ -21,7 +20,6 @@ void do_logger(int sharedMemoryIdReceived, int processesLoggerMsgQIdReceived)
             respondToReleaseLogger(&waitingQueueForLoggerSharedMemory);
         }
     }
-    //detach from shared memory
     shmdt(loggerSharedMemory);
 }
 void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemory)
@@ -38,7 +36,7 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
         strcat(fileToOpen, "Logger.txt");
     }
 
-    fileOpened = fopen(fileToOpen, "a"); //opening file  a
+    fileOpened = fopen(fileToOpen, "a");
     if (fileOpened == NULL)
     {
         printf("unable to open file\n");
@@ -46,8 +44,8 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
     else
     {
         fprintf(fileOpened, "%lu\t", (unsigned long)time(NULL));
-        fprintf(fileOpened, "%s", loggerSharedMemory->message); //writing data into file
-        fprintf(fileOpened, "\n");                              //writing data into file
+        fprintf(fileOpened, "%s", loggerSharedMemory->message); 
+        fprintf(fileOpened, "\n");                            
     }
     fflush(fileOpened);
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueForLoggerSharedMemory);

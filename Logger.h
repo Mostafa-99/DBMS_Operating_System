@@ -1,4 +1,5 @@
 #include "includes.h"
+
 struct Log *loggerSharedMemory = NULL;
 int loggerSemaphore = SEMAPHORE_AVAILABLE;
 int processesLoggerMsgQId;

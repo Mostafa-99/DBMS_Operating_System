@@ -12,7 +12,7 @@ struct inQueueProcess *createNewNode(int givenPID)
 struct waitingQueue *createWaitingQueue()
 {
     struct waitingQueue *newQueue = (struct waitingQueue *)malloc(sizeof(struct waitingQueue));
-    newQueue->front = newQueue->rear = NULL;
+    newQueue->front = newQueue->rear = NO_NODE;
     return newQueue;
 }
 void addToWaitingQueue(struct waitingQueue *givenQueue, int PID)
@@ -47,12 +47,11 @@ void handlingSIGUSR1_and_IgnoringSigStop(int signum)
 }
 
 
-
 //-----------------------Parent--------------------------
 pid_t forkAllChildren(int numberOfClients)
 {
     pid_t pid;
-    msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
+    msgqid = msgget(IPC_PRIVATE, 0644);
     if (msgqid == ERROR_IN_CREATE)
     {
         perror("Error in create");

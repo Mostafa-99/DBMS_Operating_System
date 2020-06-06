@@ -1,5 +1,5 @@
 #include "DBManager.h"
-//----------------------------------------------------------------
+
 void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int DBSharedMemoryIdReceived, int receivedLoggerMsgQId, int receivedLoggerId)
 {
     initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived, receivedLoggerMsgQId, receivedLoggerId);
@@ -18,7 +18,8 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
         }
         else if (messageType == MESSAGE_TYPE_MODIFY)
         {
-            respondToModify(receivedMessage.key, receivedMessage.modification);
+            int responseCheck=respondToModify(receivedMessage.key, receivedMessage.modification);
+            if(responseCheck==SUCCESSFUL_MODIFICATION)
             logDBManagerModify(receivedMessage.callingProcessID, receivedMessage.key, receivedMessage.modification);
         }
         else if (messageType == MESSAGE_TYPE_ACQUIRE)
@@ -50,20 +51,25 @@ int respondToAdd(char *name, int salary, int lastKey)
     DBtable[lastKey + 1] = newRecord;
     return lastKey + 1;
 }
-void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
+int respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
 {
     int currentIndex = 0;
     for (; DBtable[currentIndex].key < keyOfTheRecordToBeModified; currentIndex++)
     {
         /*checks that the index to be modified exists*/
     }
-    if (currentIndex == keyOfTheRecordToBeModified)
+    if (currentIndex == keyOfTheRecordToBeModified && DBsemaphores[currentIndex] == SEMAPHORE_OCCUPIED)
     {
         DBtable[currentIndex].salary += modificationValue;
         if (DBtable[currentIndex].salary < SALARY_LOWER_LIMIT)
         {
             DBtable[currentIndex].salary = SALARY_LOWER_LIMIT;
         }
+        return SUCCESSFUL_MODIFICATION;
+    }
+    else
+    {
+        return FAILED_MODIFICATION;
     }
 }
 int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue *waitingQueueOfThePassedKey)
@@ -203,7 +209,6 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
         {
             for (; checkedRecordIndex <= lastKey; checkedRecordIndex++)
             {
-                printf("%s %d Hybrid\n", searchedName, searchedSalary);
                 if ((DBtable[checkedRecordIndex].salary == searchedSalary) && (strcmp(DBtable[checkedRecordIndex].name, searchedName) == IDENTICAL_NAMES))
                 {
 

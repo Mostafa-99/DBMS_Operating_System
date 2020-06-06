@@ -23,11 +23,8 @@ int send_val;
 struct message messageClient;
 struct DBrecord *DBtableView;
 struct loggerMsgQ messageLoggerClient;
-
 struct queryLoggerMsgQ queryLoggerMsgQClient;
-
 //----------------------------
-/*DB Client functions*/
 void do_client(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int loggerIdReceived, int queryLoggerMsgQIdReceived);
 void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int loggerIdReceived, int queryLoggerMsgQIdReceived);
 void openConfigurationFile();
@@ -46,5 +43,4 @@ void logRelease(int key);
 void logQuery();
 
 void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searchedString);
-
 //----------------------------

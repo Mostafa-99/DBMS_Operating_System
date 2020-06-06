@@ -11,28 +11,27 @@
 #define FIRST_CHARACTER 0
 #define SALARY_LOWER_LIMIT 0
 #define OUT_OF_RANGE_REQUEST -1000
+#define SUCCESSFUL_MODIFICATION 1
+#define FAILED_MODIFICATION -1
+//----------------------------
 long int DBManagerPID;
-struct message receivedMessage;
-struct message sentMessageToClient;
-
 int sharedMemoryId;
 int lastKey= KEY_START -1;
-struct waitingQueue *pointersOfWaitingQueuesForRecordKeys[MAX_NUMBER_OF_RECORDS];
-
-struct DBrecord *DBtable;
 int LoggerId;
 int loggerMsgQIdDBManager;
-
-struct Log *DBManagerLogger;
-
-struct loggerMsgQ messageLoggerDBManager;
 int DBsemaphores [MAX_NUMBER_OF_RECORDS];
-
-
+//----------------------------
+struct message receivedMessage;
+struct message sentMessageToClient;
+struct waitingQueue *pointersOfWaitingQueuesForRecordKeys[MAX_NUMBER_OF_RECORDS];
+struct DBrecord *DBtable;
+struct Log *DBManagerLogger;
+struct loggerMsgQ messageLoggerDBManager;
+//----------------------------
 void respondToRequests();
-int respondToAdd(char* name, int salary, int lastKey); //implemented
-void respondToModify(int keyOfTheRecordToBeModified, int modificationValue); //implemented
-int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey); //implemented
+int respondToAdd(char* name, int salary, int lastKey);
+int respondToModify(int keyOfTheRecordToBeModified, int modificationValue);
+int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey);
 int respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey);
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int CallingProccessPID);
 void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,int DBSharedMemoryIdReceived,int loggerMsgQIdReceived,int LoggerIdReceived);

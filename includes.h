@@ -38,6 +38,7 @@
 #define IDENTICAL_WORDS 0
 #define MAX_MEASSAGE_SIZE 420
 #define MAX_NUMBER_SIZE 2
-int messageQueueID;
 #define MAXCHAR 1000
 #define MAX_NUMBER_OF_RECORDS 1000
+//----------------------------
+int messageQueueID;

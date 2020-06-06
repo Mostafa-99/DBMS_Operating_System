@@ -1,5 +1,4 @@
 #include "includes.h"
-//----------------------------------
 
 //------------Semaphores----------------
 struct inQueueProcess 

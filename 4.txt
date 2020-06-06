@@ -1,5 +1,5 @@
-add mido77 20000
-add soso77 30000
+add soaad 20000
+add sara 30000
 add mohamed_45 20000
 add ahmed_45 30000
 acquire 1

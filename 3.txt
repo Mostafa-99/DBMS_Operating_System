@@ -1,5 +1,5 @@
-add mido 20000
-add soso 30000
+add mostafa 20000
+add may 30000
 add mohamed_4 20000
 add ahmed_4 30000
 acquire 1
