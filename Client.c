@@ -170,6 +170,7 @@ void requestToAdd(char *name, int salary)
     strcpy(messageClient.name, name);
     messageClient.salary = salary;
     messageClient.callingProcessID = getpid();
+    messageClient.mtype=DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     if (send_val == -1)
     {
@@ -182,15 +183,18 @@ void requestToAdd(char *name, int salary)
 }
 void logAdd(char *name, int salary)
 {
-   printf("I am child: %d and I am client number: %d, I require to add %s with salary %d _________________________%d______%d\n", getpid(), clientNumber, name, salary,loggerMsgQIdClient,LoggerId);
+   //printf("I am child: %d and I am client number: %d, I require to add %s with salary %d _________________________%d______%d\n", getpid(), clientNumber, name, salary,loggerMsgQIdClient,LoggerId);
     messageLoggerClient.mtype = LoggerId;
     messageLoggerClient.PID = getpid();
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
+    
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
     
     
     raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);
+    //int rec= msgrcv(loggerMsgQIdClient, &messageLoggerClient, (sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype)), getpid(), !IPC_NOWAIT);
+
 
     char clientNumberString[5];
     sprintf(clientNumberString, "%d", clientNumber);
@@ -206,6 +210,7 @@ void logAdd(char *name, int salary)
     strcat(msgArray, salaryString);
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
+    messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
     
     
@@ -218,6 +223,8 @@ void requestToModify(int key, int modification, int value)
     messageClient.key = key;
     messageClient.modification = value * modification;
     messageClient.callingProcessID = getpid();
+    messageClient.mtype=DBManagerId;
+
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     if (send_val == -1)
     {
@@ -239,6 +246,8 @@ void logModify(int key, int modification, int value)
     
     raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);
+    //int rec= msgrcv(loggerMsgQIdClient, &messageLoggerClient, (sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype)), getpid(), !IPC_NOWAIT);
+
 
     char clientNumberString[5];
     sprintf(clientNumberString, "%d", clientNumber);
@@ -255,7 +264,7 @@ void logModify(int key, int modification, int value)
     strcat(msgArray, valueString);
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
-
+    messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     
@@ -267,6 +276,7 @@ void requestToAcquire(int key)
     messageClient.destinationProcess = MESSAGE_TYPE_ACQUIRE;
     messageClient.key = key;
     messageClient.callingProcessID = getpid();
+    messageClient.mtype=DBManagerId;
     send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
     if (send_val == -1)
     {
@@ -285,6 +295,9 @@ void requestToAcquire(int key)
       //  printf("Acquire doneeeeeeeeeeeeeeeeeeeeeeee \n");
             logAcquire(key);
         }
+        else{
+            perror("error in send msg");
+        }
     }
 }
 void logAcquire(int key)
@@ -297,6 +310,8 @@ void logAcquire(int key)
     
     raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);
+    //int rec= msgrcv(loggerMsgQIdClient, &messageLoggerClient, (sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype)), getpid(), !IPC_NOWAIT);
+
 
     char clientNumberString[5];
     sprintf(clientNumberString, "%d", clientNumber);
@@ -308,7 +323,7 @@ void logAcquire(int key)
 
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
-
+    messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     
@@ -343,6 +358,8 @@ void logRelease(int key)
     
     raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);
+    //int rec= msgrcv(loggerMsgQIdClient, &messageLoggerClient, (sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype)), getpid(), !IPC_NOWAIT);
+
 
     char clientNumberString[5];
     sprintf(clientNumberString, "%d", clientNumber);
@@ -354,7 +371,7 @@ void logRelease(int key)
 
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
-
+    messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     
@@ -368,14 +385,28 @@ void requestToQuery(int queryType, int searchedSalary, char **searchedString)
     messageClient.destinationProcess = MESSAGE_TYPE_QUERY;
     messageClient.queryType = queryType;
     messageClient.searchedSalary = searchedSalary;
-    printf("I am the client I request a query with type %d and salary %d searching for: %s\n",queryType, searchedSalary, *searchedString);
+    messageClient.mtype=DBManagerId;
    if(*searchedString!=NULL)
    {
     strcpy(messageClient.searchedString, *searchedString);
    }
     messageClient.callingProcessID = getpid();
-    send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
-    
+    send_val=-1;
+    while(send_val==-1)
+    {
+        send_val = msgsnd(clientDBManagerMsgQId, &messageClient, sizeof(messageClient) - sizeof(messageClient.mtype), !IPC_NOWAIT);
+
+    }
+    if(send_val!=-1)
+    {
+     // printf("I am the client I request a query with type %d and salary %d searching for: %s  __msg Q: %d\n", messageClient.destinationProcess, searchedSalary, *searchedString,clientDBManagerMsgQId);
+
+    }
+    else{
+
+        perror("error in send msg");
+
+    }
     //struct message messageClient2;
     //printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
     int rec= msgrcv(clientDBManagerMsgQId, &messageClient, (sizeof(messageClient) - sizeof(messageClient.mtype)), getpid(), !IPC_NOWAIT);
@@ -400,6 +431,8 @@ void logQuery()
     
     raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);
+   // int rec= msgrcv(loggerMsgQIdClient, &messageLoggerClient, (sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype)), getpid(), !IPC_NOWAIT);
+
 
     char clientNumberString[5];
     sprintf(clientNumberString, "%d", clientNumber);
@@ -408,7 +441,7 @@ void logQuery()
 
     strcpy(clientLogger->message, msgArray);
     messageLoggerClient.destinationProcess = MESSAGE_TYPE_RELEASE;
-
+    messageLoggerClient.mtype = LoggerId;
     send_val = msgsnd(loggerMsgQIdClient, &messageLoggerClient, sizeof(messageLoggerClient) - sizeof(messageLoggerClient.mtype), !IPC_NOWAIT);
 
     
@@ -425,9 +458,9 @@ void sendToQueryLogger()
 
             break;
         }
-        printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz  break  %d  __ %d __ %d\n",messageClient.queryKeys[i],getpid(),i);
+       // printf("querryyyyyyyyyyyzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz  break  %d  __ %d __ %d\n",messageClient.queryKeys[i],getpid(),i);
     }
-     printf("querryyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \n");
+    // printf("querryyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \n");
     
     //set size
    

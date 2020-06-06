@@ -9,6 +9,7 @@
 #include<signal.h>
 #include <sys/shm.h> 
 #include <sys/wait.h>
+    #include <sys/resource.h>
 
 //----------------------------
 #define MESSAGE_TYPE_ADD 1

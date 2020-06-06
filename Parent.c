@@ -37,6 +37,7 @@ void initializeSharedRecources()
 void roleIdentification()
 {
     int send_val;
+    
     key_t clientDBManager_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
     key_t processesLogger_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)
     key_t processesQueryLogger_msgqid = msgget(IPC_PRIVATE, 0644); // or msgget(12613, IPC_CREATE | 0644)

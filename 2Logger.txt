@@ -1,82 +1,19 @@
-1591381632	I require to add saad with salary 20000
-1591381634	I require to add sa3dia with salary 30000
-1591381636	I acquire key: 3
-1591381638	I require to modify key: 3 with value 10000
-1591381640	I release key: 3
-1591381642	I require to add mohamed_3 with salary 20000
-1591381644	I require to add ahmed_3 with salary 30000
-1591381646	I acquire key: 1
-1591381654	I acquire key: 0
-1591381656	I require to modify key: 0 with value 10000
-1591381658	I require to modify key: 1 with value -10000
-1591381660	I release key: 1
-1591381662	I release key: 0
-1591381705	I require to add saad with salary 20000
-1591381707	I require to add sa3dia with salary 30000
-1591381709	I acquire key: 3
-1591381711	I require to modify key: 3 with value 10000
-1591381711	I require to modify key: 3 with value 10000
-1591381713	I release key: 3
-1591381715	I require to add mohamed_3 with salary 20000
-1591381717	I require to add ahmed_3 with salary 30000
-1591381719	I acquire key: 1
-1591381721	I acquire key: 0
-1591381723	I require to modify key: 0 with value 10000
-1591381725	I require to modify key: 1 with value -10000
-1591381727	I release key: 1
-1591381729	I release key: 0
-1591381737	I acquire key: 2
-1591381739	I acquire key: 3
-1591381739	I acquire key: 3
-1591381741	I require to modify key: 2 with value 10000
-1591381743	I require to modify key: 3 with value -10000
-1591381745	I release key: 2
-1591381747	I release key: 3
-1591381749	I requested a query 
-1591381751	I requested a query 
-1591381858	I require to add saad with salary 20000
-1591381858	I require to add saad with salary 20000
-1591381860	I require to add sa3dia with salary 30000
-1591381862	I acquire key: 3
-1591381862	I require to add mohamed_4 with salary 20000
-1591381864	I require to modify key: 3 with value 10000
-1591381864	I require to modify key: 3 with value 10000
-1591381866	I release key: 3
-1591381868	I require to add mohamed_3 with salary 20000
-1591381868	I require to add mohamed_3 with salary 20000
-1591381870	I require to add ahmed_3 with salary 30000
-1591381872	I acquire key: 1
-1591381880	I acquire key: 0
-1591381882	I require to modify key: 0 with value 10000
-1591381884	I require to modify key: 1 with value -10000
-1591381888	I release key: 0
-1591381890	I acquire key: 2
-1591381892	I acquire key: 3
-1591381894	I require to modify key: 2 with value 10000
-1591381896	I require to modify key: 3 with value -10000
-1591381898	I release key: 2
-1591381900	I release key: 3
-1591381902	I requested a query 
-1591381904	I requested a query 
-1591381967	I require to add saad with salary 20000
-1591381969	I require to add sa3dia with salary 30000
-1591381971	I acquire key: 3
-1591381973	I require to modify key: 3 with value 10000
-1591381975	I release key: 3
-1591381977	I require to add mohamed_3 with salary 20000
-1591381979	I require to add ahmed_3 with salary 30000
-1591381981	I acquire key: 1
-1591381981	I acquire key: 1
-1591381989	I acquire key: 0
-1591381991	I require to modify key: 0 with value 10000
-1591381993	I require to modify key: 1 with value -10000
-1591381995	I release key: 1
-1591381997	I release key: 0
-1591382008	I acquire key: 2
-1591382010	I acquire key: 3
-1591382012	I require to modify key: 2 with value 10000
-1591382014	I require to modify key: 3 with value -10000
-1591382016	I release key: 2
-1591382018	I release key: 3
-1591382020	I requested a query 
-1591382022	I requested a query 
+1591402624	I require to add saad with salary 20000
+1591402626	I require to add sa3dia with salary 30000
+1591402628	I acquire key: 3
+1591402630	I require to modify key: 3 with value 10000
+1591402632	I release key: 3
+1591402634	I require to add mohamed_3 with salary 20000
+1591402636	I require to add ahmed_3 with salary 30000
+1591402652	I acquire key: 1
+1591402654	I acquire key: 0
+1591402656	I require to modify key: 0 with value 10000
+1591402658	I require to modify key: 1 with value -10000
+1591402660	I release key: 1
+1591402662	I release key: 0
+1591402664	I acquire key: 2
+1591402666	I acquire key: 3
+1591402668	I require to modify key: 2 with value 10000
+1591402670	I require to modify key: 3 with value -10000
+1591402672	I release key: 2
+1591402674	I release key: 3

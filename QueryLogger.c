@@ -15,8 +15,8 @@ void do_queryLogger(int queryLoggerMsgQIdReceived)
       //sleep(100);
       int rec=msgrcv(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, (sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype)), getpid(), !IPC_NOWAIT);
       // if(rec!=-1)
-      printf("QueryLogger is not here  %s\n",queryLoggerMsgQProccess.message);
-      fileOpened = fopen("QueryLogger", "a"); //opening file  a
+     // printf("QueryLogger is not here  %s\n",queryLoggerMsgQProccess.message);
+      fileOpened = fopen("QueryLogger.txt", "a"); //opening file  a
       if (fileOpened == NULL)
       {
           printf("unable to open file\n");

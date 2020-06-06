@@ -8,8 +8,6 @@ void initializeLogger(int sharedMemoryIdReceived, int processesLoggerMsgQIdRecei
 void do_logger(int sharedMemoryIdReceived, int processesLoggerMsgQIdReceived)
 {
     initializeLogger(sharedMemoryIdReceived, processesLoggerMsgQIdReceived);
-    char previousNumber[MAX_NUMBER_SIZE] = "he";
-    char previousMessage[MAX_MEASSAGE_SIZE] = "hey";
     while (1)
     {
         //printf("%d aa\n", loggerSharedMemory->number);
@@ -39,7 +37,6 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
     }
     else
     {
-        /* code */
         strcpy(fileToOpen, loggerSharedMemory->number);
         strcat(fileToOpen,"Logger.txt");
     }
@@ -53,22 +50,29 @@ void respondToReleaseLogger(struct waitingQueue *waitingQueueForLoggerSharedMemo
     }
     else
     {
-      //  printf("msg : %s \n", loggerSharedMemory->message);
         fprintf(fileOpened, "%lu\t", (unsigned long)time(NULL));
         fprintf(fileOpened, "%s", loggerSharedMemory->message);   //writing data into file
         fprintf(fileOpened, "\n");                                      //writing data into file
     }
     fflush(fileOpened);
     int releasedProcessPID = removeFromWaitingQueue(waitingQueueForLoggerSharedMemory);
-        loggerSemaphore = SEMAPHORE_AVAILABLE;
    
     if(releasedProcessPID!=-1)
     {
         kill(releasedProcessPID, SIGUSR1);
         kill(releasedProcessPID, SIGCONT);
+      /*  loggerMsgQLogger.mtype=releasedProcessPID;
+        msgsnd(processesLoggerMsgQId, &loggerMsgQLogger, sizeof(loggerMsgQLogger) - sizeof(loggerMsgQLogger.mtype), !IPC_NOWAIT);*/
+
+    }
+    else
+    {
+        loggerSemaphore = SEMAPHORE_AVAILABLE;
+        
     }
     
-    printf("Logg done wakeup next\n");
+    
+    //printf("Logg done wakeup next\n");
     
       
         

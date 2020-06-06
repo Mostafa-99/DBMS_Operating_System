@@ -1,50 +1,70 @@
-1591381632	I am DBManager I added mido77 with salary 20000
-1591381632	I am DBManager I added saad with salary 20000
-1591381632	I am DBManager I added mido with salary 20000
-1591381634	I am DBManager I added soso77 with salary 30000
-1591381634	I am DBManager I added ahmed with salary 30000
-1591381634	I am DBManager I added sa3dia with salary 30000
-1591381634	I am DBManager I added soso with salary 30000
-1591381636	I am DBManager I added mohamed_45 with salary 20000
-1591381636	I am DBManager I added mohamed_4 with salary 20000
-1591381638	I am DBManager I added ahmed_45 with salary 30000
-1591381638	I am DBManager I added ahmed_4 with salary 30000
-1591381642	I am DBManager I added mohamed_3 with salary 20000
-1591381644	I release key: 1
-1591381705	I am DBManager I added mohamed with salary 20000
-1591381705	I am DBManager I added mido77 with salary 20000
-1591381705	I am DBManager I added saad with salary 20000
-1591381705	I am DBManager I added mido with salary 20000
-1591381707	I am DBManager I added soso77 with salary 30000
-1591381707	I am DBManager I added soso with salary 30000
-1591381707	I am DBManager I added ahmed with salary 30000
-1591381709	I am DBManager I added mohamed_45 with salary 20000
-1591381709	I am DBManager I added mohamed_4 with salary 20000
-1591381711	I am DBManager I added ahmed_45 with salary 30000
-1591381711	I am DBManager I added ahmed_4 with salary 30000
-1591381715	I am DBManager I added mohamed_3 with salary 20000
-1591381717	I am DBManager I added ahmed_3 with salary 30000
-1591381858	I am DBManager I added mohamed with salary 20000
-1591381858	I am DBManager I added mido77 with salary 20000
-1591381858	I am DBManager I added saad with salary 20000
-1591381858	I am DBManager I added saad with salary 20000
-1591381860	I am DBManager I added soso77 with salary 30000
-1591381860	I am DBManager I added ahmed with salary 30000
-1591381860	I am DBManager I added sa3dia with salary 30000
-1591381860	I am DBManager I added soso with salary 30000
-1591381862	I am DBManager I added mohamed_45 with salary 20000
-1591381864	I am DBManager I added ahmed_45 with salary 30000
-1591381870	I am DBManager I added ahmed_3 with salary 30000
-1591381870	I am DBManager I added ahmed_3 with salary 30000
-1591381967	I am DBManager I added saad with salary 20000
-1591381967	I am DBManager I added mido with salary 20000
-1591381967	I require to add mohamed with salary 20000
-1591381967	I am DBManager I added mohamed with salary 20000
-1591381967	I am DBManager I added mohamed with salary 20000
-1591381969	I am DBManager I added sa3dia with salary 30000
-1591381969	I am DBManager I added soso with salary 30000
-1591381969	I am DBManager I added ahmed with salary 30000
-1591381971	I am DBManager I added mohamed_4 with salary 20000
-1591381973	I am DBManager I added ahmed_45 with salary 30000
-1591381973	I am DBManager I added ahmed_4 with salary 30000
-1591381977	I am DBManager I added mohamed_3 with salary 20000
+1591402624	I am DBManager I added mido with salary 20000
+1591402624	I am DBManager I added saad with salary 20000
+1591402624	I am DBManager I added mido77 with salary 20000
+1591402624	I am DBManager I added mohamed with salary 20000
+1591402626	I am DBManager I added sa3dia with salary 30000
+1591402626	I am DBManager I added soso with salary 30000
+1591402626	I am DBManager I added soso77 with salary 30000
+1591402626	I am DBManager I added ahmed with salary 30000
+1591402628	I am DBManager I modified record of key: 3 with a value of: -1
+1591402628	I am DBManager I added mohamed_4 with salary 20000
+1591402628	I am DBManager I added mohamed_45 with salary 20000
+1591402628	I am DBManager I modified record of key: 1 with a value of: -1
+1591402630	I am DBManager I added ahmed_4 with salary 30000
+1591402630	I am DBManager I modified record of key: 3 with a value of: 10000
+1591402630	I am DBManager I added ahmed_45 with salary 30000
+1591402630	I am DBManager I modified record of key: 0 with a value of: -1
+1591402632	I am DBManager I released record of key: 3
+1591402632	I am DBManager I modified record of key: 1 with a value of: -1
+1591402632	I am DBManager I modified record of key: 1 with a value of: -1
+1591402632	I am DBManager I modified record of key: 0 with a value of: 10000
+1591402634	I am DBManager I added mohamed_3 with salary 20000
+1591402634	I am DBManager I modified record of key: 1 with a value of: -10000
+1591402636	I am DBManager I added ahmed_3 with salary 30000
+1591402636	I am DBManager I released record of key: 1
+1591402638	I am DBManager I modified record of key: 1 with a value of: -1
+1591402638	I am DBManager I modified record of key: 0 with a value of: -1
+1591402638	I am DBManager I released record of key: 0
+1591402640	I am DBManager I modified record of key: 0 with a value of: 10000
+1591402640	I am DBManager I modified record of key: 1 with a value of: -1
+1591402642	I am DBManager I modified record of key: 1 with a value of: -10000
+1591402644	I am DBManager I released record of key: 1
+1591402646	I am DBManager I modified record of key: 0 with a value of: -1
+1591402646	I am DBManager I released record of key: 0
+1591402648	I am DBManager I modified record of key: 0 with a value of: 10000
+1591402648	I am DBManager I modified record of key: 2 with a value of: -1
+1591402650	I am DBManager I modified record of key: 1 with a value of: -10000
+1591402650	I am DBManager I modified record of key: 3 with a value of: -1
+1591402652	I am DBManager I released record of key: 1
+1591402652	I am DBManager I modified record of key: 2 with a value of: 10000
+1591402654	I am DBManager I released record of key: 0
+1591402654	I am DBManager I modified record of key: 3 with a value of: -10000
+1591402654	I am DBManager I modified record of key: 0 with a value of: -1
+1591402656	I am DBManager I modified record of key: 2 with a value of: -1
+1591402656	I am DBManager I released record of key: 2
+1591402656	I am DBManager I modified record of key: 0 with a value of: 10000
+1591402658	I am DBManager I released record of key: 3
+1591402658	I am DBManager I modified record of key: 3 with a value of: -1
+1591402658	I am DBManager I modified record of key: 1 with a value of: -10000
+1591402660	I am DBManager I modified record of key: 2 with a value of: 10000
+1591402660	I am DBManager I released record of key: 1
+1591402662	I am DBManager I modified record of key: 3 with a value of: -10000
+1591402662	I am DBManager I released record of key: 0
+1591402662	I am DBManager I modified record of key: 0 with a value of: -1
+1591402664	I am DBManager I released record of key: 2
+1591402664	I am DBManager I modified record of key: 2 with a value of: -1
+1591402664	I am DBManager I modified record of key: 0 with a value of: 10000
+1591402666	I am DBManager I released record of key: 3
+1591402666	I am DBManager I modified record of key: 1 with a value of: -10000
+1591402666	I am DBManager I modified record of key: 3 with a value of: -1
+1591402668	I am DBManager I released record of key: 1
+1591402668	I am DBManager I modified record of key: 2 with a value of: 10000
+1591402670	I am DBManager I released record of key: 0
+1591402670	I am DBManager I modified record of key: 3 with a value of: -10000
+1591402672	I am DBManager I returned a query by exact name: ahmed
+1591402672	I am DBManager I released record of key: 2
+1591402674	I am DBManager I released record of key: 3
+1591402674	I am DBManager I returned a query by full table
+1591402676	I am DBManager I returned a query by part of name: a
+1591402678	I am DBManager I added mohamed with salary 20000
+1591402680	I am DBManager I added ahmed with salary 30000
