@@ -8,19 +8,19 @@
 
 
 
-void do_child(); //base implemented
 
 void main()
-{   //readConfiguartions();
+{   
+    numberOfClients=readConfigurationFileParent();
     pid_t pid;
-    pid= forkAllChildren(NULL);
+    pid= forkAllChildren(numberOfClients);
     if(pid!=0) //Parent
     {   int stat_loc;
         initializeSharedRecources();
         roleIdentification();
         sleep(10);
         // add wait for exit code
-        for(int i=0;i<NUMBER_OF_CLIENTS;i++)
+        for(int i=0;i<numberOfClients;i++)
         {
            pid = wait(&stat_loc);
         }
@@ -28,6 +28,7 @@ void main()
         shmctl(LoggerSharedMemoryId,IPC_RMID,NULL);
         shmctl(DBSharedMemoryId,IPC_RMID,NULL);
         msgctl(msgqid, IPC_RMID, (struct msqid_ds *) 0);
+        killpg(getpgrp(),SIGTERM);
     }
     else
     {

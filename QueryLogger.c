@@ -1,58 +1,60 @@
 #include "QueryLogger.h"
 
-
-
-
-
 void do_queryLogger(int queryLoggerMsgQIdReceived)
 {
+
   initializeQueryLogger(queryLoggerMsgQIdReceived);
-  FILE *fileOpened;
-  char fileToOpen[80];
-    while (1)
+
+  while (1)
+  {
+    int rec = msgrcv(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, (sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype)), getpid(), !IPC_NOWAIT);
+     // printf("***************************************************************************************QueryLogger rec\n");
+
+    if (queryLoggerMsgQProccess.destinationProcess == MESSAGE_TYPE_ACQUIRE)
     {
-      //  printf("QueryLogger is here  MsgQId: %d  \n");
-      //sleep(100);
-      int rec=msgrcv(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, (sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype)), getpid(), !IPC_NOWAIT);
-      // if(rec!=-1)
-     // printf("QueryLogger is not here  %s\n",queryLoggerMsgQProccess.message);
-      fileOpened = fopen("QueryLogger.txt", "a"); //opening file  a
-      if (fileOpened == NULL)
-      {
-          printf("unable to open file\n");
-      }
-      else
-      {
-          fprintf(fileOpened, "Query Number %d : ",numberOfCurrentLog);
-          fprintf(fileOpened, "%lu\t", (unsigned long)time(NULL));
-          fprintf(fileOpened, "%s", queryLoggerMsgQProccess.message);   //writing data into file
-          fprintf(fileOpened, "\n");   
-          fprintf(fileOpened, "---------------------------------------------------------------------------------------------------------\n"); 
-          //replace the comments on next two lines because the size is always zero
-
-          //for (int i = 0; i < queryLoggerMsgQProccess.size; i++)
-          for (int i = 0; i < 5; i++)
-          {
-            //replace the comments on next two (4 lines) to get the real values
-
-            // fprintf(fileOpened, "%d\t",(i+1));
-            // fprintf(fileOpened, "%d\t",queryLoggerMsgQProccess.firstRecordAddress[i].key);
-            // fprintf(fileOpened, "%s\t",queryLoggerMsgQProccess.firstRecordAddress[i].name);
-            // fprintf(fileOpened, "%d\n",queryLoggerMsgQProccess.firstRecordAddress[i].salary);
-            fprintf(fileOpened, "%d\t",(i+1));
-            fprintf(fileOpened, "%s\t\t","key");
-            fprintf(fileOpened, "%s\t","name");
-            fprintf(fileOpened, "%s\n","salary");
-          }
-          fprintf(fileOpened, "-----------------------------------------------------------------------------------------------------------------------------------------------------------------\n");  
-          numberOfCurrentLog++; 
-      }
-      fflush(fileOpened);
+      respondToAcquireQueryLogger(queryLoggerMsgQProccess.PID);
     }
+    else if (queryLoggerMsgQProccess.destinationProcess == MESSAGE_TYPE_RELEASE)
+    {
+      respondToReleaseQueryLogger(&waitingQueueForQueryLogger);
+    }
+  }
 }
-
-void  initializeQueryLogger(int queryLoggerMsgQIdReceived)
+void initializeQueryLogger(int queryLoggerMsgQIdReceived)
 {
-    queryLoggerMsgQIdQuery=queryLoggerMsgQIdReceived;
-    numberOfCurrentLog=1;
+  queryLoggerMsgQIdQuery = queryLoggerMsgQIdReceived;
+  numberOfCurrentLog = 1;
+}
+void respondToReleaseQueryLogger(struct waitingQueue *waitingQueueForQueryLogger)
+{
+
+  int releasedProcessPID = removeFromWaitingQueue(waitingQueueForQueryLogger);
+
+  if (releasedProcessPID != -1)
+  {
+    queryLoggerMsgQProccess.mtype = releasedProcessPID;
+    //  printf("***************************************************************************************QueryLogger wake up from queue\n");
+    msgsnd(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype), !IPC_NOWAIT);
+  }
+  else
+  {
+       // printf("***************************************************************************************QueryLogger semaphore available\n");
+
+    queryLoggerSemaphore = SEMAPHORE_AVAILABLE;
+  }
+}
+void respondToAcquireQueryLogger(int PID)
+{
+  if (queryLoggerSemaphore == SEMAPHORE_AVAILABLE)
+  {
+    //printf("***************************************************************************************QueryLogger send first one\n");
+    queryLoggerSemaphore = SEMAPHORE_OCCUPIED;
+    queryLoggerMsgQProccess.mtype = PID;
+    msgsnd(queryLoggerMsgQIdQuery, &queryLoggerMsgQProccess, sizeof(queryLoggerMsgQProccess) - sizeof(queryLoggerMsgQProccess.mtype), !IPC_NOWAIT);
+  }
+  else
+  {
+    //printf("***************************************************************************************QueryLogger add to queue\n");
+    addToWaitingQueue(&waitingQueueForQueryLogger,PID);
+  }
 }

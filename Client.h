@@ -37,6 +37,7 @@ void requestToModify(int key, int modification, int value);
 void requestToAcquire(int key);
 void requestToRelease(int key);
 void requestToQuery(int queryType, int searchedSalary, char** searchedString);
+void sendToQueryLogger(int queryType);
 
 void logAdd(char * name, int salary);
 void logModify(int key,int modification ,int value);

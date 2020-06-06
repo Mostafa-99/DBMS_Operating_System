@@ -7,7 +7,7 @@ int respondToAdd(char *name, int salary, int lastKey)
     newRecord.salary = salary;
     newRecord.key = lastKey + 1;
     DBtable[lastKey + 1] = newRecord;
-    // printf("New record added to DB with name: %s and Salary: %d with key: %d \n",DBtable[lastKey+1].name,DBtable[lastKey+1].salary,DBtable[lastKey+1].key);
+    printf("New record added to DB with name: %s and Salary: %d with key: %d \n", DBtable[lastKey + 1].name, DBtable[lastKey + 1].salary, DBtable[lastKey + 1].key);
     return lastKey + 1;
 }
 void respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
@@ -43,7 +43,7 @@ int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waiti
         // kill(CallingProccessPID,SIGCONT);
         receivedMessage.mtype = CallingProccessPID;
 
-          printf("Respond Acquire:Semaphore available DBmanager\n");
+        printf("Respond Acquire:Semaphore available DBmanager\n");
         msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage) - sizeof(receivedMessage.mtype), !IPC_NOWAIT);
     }
     return waitingBoolean;
@@ -60,16 +60,19 @@ void respondToRelease(int releasedRecordKey, int CallingProccessPID, struct wait
         receivedMessage.mtype = releasedProcessPID;
         msgsnd(messageQueueID, &receivedMessage, sizeof(receivedMessage) - sizeof(receivedMessage.mtype), !IPC_NOWAIT);
     }
-    else{
+    else
+    {
 
         DBsemaphores[releasedRecordKey] = SEMAPHORE_AVAILABLE;
     }
 }
+
 void respondToQuery(int queryType, int searchedSalary, char *searchedName, int callingProcessID)
 {
-      //  printf("Respond to Query DBmanager: %d\n",queryType);
+    //  printf("Respond to Query DBmanager: %d\n",queryType);
     if (lastKey + 1 > 0)
     {
+        printf("New queryyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy  %d\n", queryType);
         struct message sendSearchResult;
         int notReturnedKey = -1;
         int checkedRecordIndex = 0;
@@ -80,7 +83,7 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
             for (; checkedRecordIndex <= lastKey; checkedRecordIndex++)
             {
                 sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
-              //  printf("return key: %d\n",checkedRecordIndex);
+                //  printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_EXACT_NAME)
@@ -91,18 +94,19 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                 //   printf("return keyyyy: %d\n",checkedRecordIndex);
+                //   printf("return keyyyy: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_PART_OF_NAME)
         {
             for (; checkedRecordIndex <= lastKey; checkedRecordIndex++)
             {
-                if (strstr(DBtable[checkedRecordIndex].name, searchedName) != NULL)
+
+                if (DBtable[checkedRecordIndex].name[0] == *searchedName)
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                 //   printf("return key: %d\n",checkedRecordIndex);
+                //   printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_EXACT_SALARY)
@@ -114,7 +118,7 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                  //  printf("return key: %d\n",checkedRecordIndex);
+                //  printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_LESS_THAN_SALARY)
@@ -125,7 +129,7 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                  //  printf("return key: %d\n",checkedRecordIndex);
+                //  printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_GREATER_THAN_SALARY)
@@ -136,7 +140,7 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                  //  printf("return key: %d\n",checkedRecordIndex);
+                //  printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_LESS_THAN_OR_EQUAL_SALARY)
@@ -147,7 +151,7 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                 //   printf("return key: %d\n",checkedRecordIndex);
+                //   printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_GREATER_THAN_OR_EQUAL_SALARY)
@@ -158,34 +162,32 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                  //  printf("return key: %d\n",checkedRecordIndex);
+                //  printf("return key: %d\n",checkedRecordIndex);
             }
         }
         else if (queryType == QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID)
         {
             for (; checkedRecordIndex <= lastKey; checkedRecordIndex++)
             {
-                if (DBtable[checkedRecordIndex].salary == searchedSalary && strcmp(DBtable[checkedRecordIndex].name, searchedName) == 0)
+                if ((DBtable[checkedRecordIndex].salary == searchedSalary) && (strcmp(DBtable[checkedRecordIndex].name, searchedName) == 0))
                 {
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
-                   // printf("return key: %d\n",checkedRecordIndex);
             }
         }
 
         if (returnedKeyIndex > 0)
         {
             sendSearchResult.mtype = callingProcessID;
-
-            //to lock the array
-           // for (int i = 0; i < returnedKeyIndex; i++)
-              //  printf("returned values of key: %d\n", sendSearchResult.queryKeys[i]);
         }
-
-            sendSearchResult.queryKeys[returnedKeyIndex++] = -1;
-            sendSearchResult.mtype=callingProcessID;
-            msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult) - sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
-          //  printf("Respond to Query DBmanagerqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: %d\n",queryType);
+        //to lock the array
+        /* for (int i = 0; i < returnedKeyIndex; i++)
+                printf("returned values of key: %d\n", sendSearchResult.queryKeys[i]);
+            */
+        sendSearchResult.queryKeys[returnedKeyIndex++] = -1;
+        sendSearchResult.mtype = callingProcessID;
+        msgsnd(messageQueueID, &sendSearchResult, sizeof(sendSearchResult) - sizeof(sendSearchResult.mtype), !IPC_NOWAIT);
+        //  printf("Respond to Query DBmanagerqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: %d\n",queryType);
     }
 }
 void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived)
@@ -206,15 +208,14 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
     initializeDBManager(clientDBManagerMsgQIdReceived, sharedMemoryIdReceived, DBSharedMemoryIdReceived, loggerMsgQIdReceived, LoggerIdReceived);
     while (1)
     {
-        receivedMessage.destinationProcess=-1;
-        receivedMessage.queryType=-1;
-        int rec_val=-1;
-      //  while (rec_val==-1)
+        receivedMessage.destinationProcess = -1;
+        receivedMessage.queryType = -1;
+        int rec_val = -1;
+        //  while (rec_val==-1)
         {
-            rec_val= msgrcv(messageQueueID, &receivedMessage, (sizeof(receivedMessage) - sizeof(receivedMessage.mtype)), getpid(), !IPC_NOWAIT);
-
+            rec_val = msgrcv(messageQueueID, &receivedMessage, (sizeof(receivedMessage) - sizeof(receivedMessage.mtype)), getpid(), !IPC_NOWAIT);
         }
-           // printf("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %d\n",receivedMessage.destinationProcess);
+        // printf("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy %d\n",receivedMessage.destinationProcess);
         int messageType = receivedMessage.destinationProcess;
         int notAvailableForThisRequest = -1;
         char *noAvailableNameForThisRequest = NULL;
@@ -234,7 +235,7 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
         else if (messageType == MESSAGE_TYPE_ACQUIRE)
         {
             int waitBoolean = respondToAcquire(receivedMessage.key, receivedMessage.callingProcessID, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
-             logDBManagerAcquire(messageType, noAvailableNameForThisRequest, notAvailableForThisRequest, receivedMessage.callingProcessID, waitBoolean, receivedMessage.key, notAvailableForThisRequest, notAvailableForThisRequest);
+            logDBManagerAcquire(messageType, noAvailableNameForThisRequest, notAvailableForThisRequest, receivedMessage.callingProcessID, waitBoolean, receivedMessage.key, notAvailableForThisRequest, notAvailableForThisRequest);
         }
         else if (messageType == MESSAGE_TYPE_RELEASE)
         {
@@ -263,8 +264,7 @@ void logDBManagerAdd(int requestedType, char *name, int salary, int callingProce
 
     /*raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    int rec= msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
-
+    int rec = msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -297,8 +297,7 @@ void logDBManagerModify(int requestedType, char *name, int salary, int callingPr
 
     /*raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    int rec= msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
-
+    int rec = msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -332,8 +331,7 @@ void logDBManagerAcquire(int requestedType, char *name, int salary, int callingP
 
     /*raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    int rec= msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
-
+    int rec = msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -367,8 +365,7 @@ void logDBManagerRelease(int requestedType, char *name, int salary, int callingP
 
     /*raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    int rec= msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
-
+    int rec = msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -379,7 +376,7 @@ void logDBManagerRelease(int requestedType, char *name, int salary, int callingP
     char messageForSharedMemory[MAXCHAR] = "I am DBManager I released record of key: ";
     strcat(messageForSharedMemory, keyOfSemaphore);
     strcpy(DBManagerLogger->message, messageForSharedMemory);
-   // printf("%s\n", messageForSharedMemory);
+    // printf("%s\n", messageForSharedMemory);
     messageLoggerDBManager.mtype = LoggerId;
     messageLoggerDBManager.destinationProcess = MESSAGE_TYPE_RELEASE;
     send_val = msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
@@ -395,10 +392,9 @@ void logDBManagerQuery(int requestedType, char *name, int salary, int callingPro
     {
     }
 
-   /* raise(SIGTSTP);
+    /* raise(SIGTSTP);
     signal(SIGTSTP, SIG_DFL);*/
-    int rec= msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
-
+    int rec = msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -411,13 +407,13 @@ void logDBManagerQuery(int requestedType, char *name, int salary, int callingPro
     }
     else if (queryType == QUERY_BY_EXACT_NAME)
     {
-       // printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %s____ %d\n","Exact name",LoggerId);
+        // printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %s____ %d\n","Exact name",LoggerId);
         strcat(messageForSharedMemory, "exact name: ");
         strcat(messageForSharedMemory, name);
     }
     else if (queryType == QUERY_BY_PART_OF_NAME)
     {
-   // printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %s____ %d\n","Part of name",LoggerId);
+        // printf("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq  %s____ %d\n","Part of name",LoggerId);
         strcat(messageForSharedMemory, "part of name: ");
         strcat(messageForSharedMemory, name);
     }

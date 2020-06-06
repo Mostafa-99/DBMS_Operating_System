@@ -1,5 +1,6 @@
 #include "includes.h"
 //----------------------------------
+#define PARENT_CONFIGURATION_FILE_NAME "parentConfig.txt"
 //----------------------------
 #define SEMAPHORE_OCCUPIED 0
 #define SEMAPHORE_AVAILABLE 1
@@ -20,8 +21,9 @@ int removeFromWaitingQueue(struct waitingQueue* givenQueue);  //implemented
 
 
 //----------------------------
-#define NUMBER_OF_PROCESS 7
-#define NUMBER_OF_CLIENTS 4
+#define NUMBER_OF_PROCESS_OF_MAIN_MODULES 3
+#define MAX_NUMBER_OF_PROCESS 100
+
 #define DBMANAGER_INDEX 0
 #define QUERY_LOGGER_INDEX 1
 #define LOGGER_INDEX 2
@@ -35,7 +37,8 @@ int removeFromWaitingQueue(struct waitingQueue* givenQueue);  //implemented
 key_t msgqid;
 int LoggerSharedMemoryId=-1;
 int DBSharedMemoryId=-1;
-int processesIds[NUMBER_OF_PROCESS]={-1};
+int processesIds[MAX_NUMBER_OF_PROCESS]={-1};
+int numberOfClients=0;
 //----------------------------
 struct DBrecord
 {
@@ -91,14 +94,16 @@ struct loggerMsgQ
 struct queryLoggerMsgQ
 {
     long mtype;
-    struct DBrecord * firstRecordAddress;
-    int size;
+    int PID;
     char message[MAXCHAR];
+    int destinationProcess;
 };
 //----------------------------
 /*Parent functions*/
-int* readConfiguartions(); 
-pid_t forkAllChildren(int* configurations); //implemented
+int readConfigurationFileParent();
+pid_t forkAllChildren(int numberOfClients); //implemented
 void initializeSharedRecources(); //implemented
 void roleIdentification();  //implemented
+void do_child(); //base implemented
+
 //----------------------------
