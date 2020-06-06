@@ -24,7 +24,10 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
         else if (messageType == MESSAGE_TYPE_ACQUIRE)
         {
             int callingProcessWaitingBoolean = respondToAcquire(receivedMessage.key, receivedMessage.callingProcessID, pointersOfWaitingQueuesForRecordKeys[receivedMessage.key]);
-            logDBManagerAcquire(receivedMessage.callingProcessID, callingProcessWaitingBoolean, receivedMessage.key);
+            if (callingProcessWaitingBoolean != OUT_OF_RANGE_REQUEST)
+            {
+                logDBManagerAcquire(receivedMessage.callingProcessID, callingProcessWaitingBoolean, receivedMessage.key);
+            }
         }
         else if (messageType == MESSAGE_TYPE_RELEASE)
         {
@@ -68,17 +71,26 @@ int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waiti
     struct message messageSentToClient;
     messageSentToClient.mtype = CallingProccessPID;
     int callingProcessWaitingBoolean;
-    if (DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED)
+    if (lastKey >= requiredRecordKey)
     {
-        callingProcessWaitingBoolean = ADDED_TO_WAITING_QUEUE;
-        addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
+        if (DBsemaphores[requiredRecordKey] == SEMAPHORE_OCCUPIED)
+        {
+            callingProcessWaitingBoolean = ADDED_TO_WAITING_QUEUE;
+            addToWaitingQueue(waitingQueueOfThePassedKey, CallingProccessPID);
+        }
+        else
+        {
+            DBsemaphores[requiredRecordKey] = SEMAPHORE_OCCUPIED;
+            callingProcessWaitingBoolean = GRANTED_ACCESS;
+            kill(CallingProccessPID, SIGUSR1);
+            kill(CallingProccessPID, SIGCONT);
+        }
     }
     else
     {
-        DBsemaphores[requiredRecordKey] = SEMAPHORE_OCCUPIED;
-        callingProcessWaitingBoolean = GRANTED_ACCESS;
         kill(CallingProccessPID, SIGUSR1);
         kill(CallingProccessPID, SIGCONT);
+        callingProcessWaitingBoolean = OUT_OF_RANGE_REQUEST;
     }
     return callingProcessWaitingBoolean;
 }
@@ -191,8 +203,10 @@ void respondToQuery(int queryType, int searchedSalary, char *searchedName, int c
         {
             for (; checkedRecordIndex <= lastKey; checkedRecordIndex++)
             {
+                printf("%s %d Hybrid\n", searchedName, searchedSalary);
                 if ((DBtable[checkedRecordIndex].salary == searchedSalary) && (strcmp(DBtable[checkedRecordIndex].name, searchedName) == IDENTICAL_NAMES))
                 {
+
                     sendSearchResult.queryKeys[returnedKeyIndex++] = checkedRecordIndex;
                 }
             }
@@ -223,7 +237,9 @@ void logDBManagerAdd(char *name, int salary)
     messageLoggerDBManager.requestedAction = MESSAGE_TYPE_ACQUIRE;
     msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
 
-    msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -249,7 +265,9 @@ void logDBManagerModify(int callingProcessPID, int recordKey, int modificationVa
     messageLoggerDBManager.requestedAction = MESSAGE_TYPE_ACQUIRE;
     msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
 
-    msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -277,7 +295,9 @@ void logDBManagerAcquire(int callingProcessPID, int callingProcessWaitingBoolean
     messageLoggerDBManager.requestedAction = MESSAGE_TYPE_ACQUIRE;
     msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
 
-    msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -317,7 +337,9 @@ void logDBManagerRelease(int recordKey, int releasedProcess)
     messageLoggerDBManager.requestedAction = MESSAGE_TYPE_ACQUIRE;
     msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
 
-    msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);
@@ -353,7 +375,9 @@ void logDBManagerQuery(char *name, int salary, int queryType)
     messageLoggerDBManager.requestedAction = MESSAGE_TYPE_ACQUIRE;
     msgsnd(loggerMsgQIdDBManager, &messageLoggerDBManager, sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype), !IPC_NOWAIT);
 
-    msgrcv(loggerMsgQIdDBManager, &messageLoggerDBManager, (sizeof(messageLoggerDBManager) - sizeof(messageLoggerDBManager.mtype)), getpid(), !IPC_NOWAIT);
+    signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);
+    raise(SIGTSTP);
+    signal(SIGTSTP, SIG_DFL);
 
     char DBManagerNumberString[5];
     sprintf(DBManagerNumberString, "%d", 0);

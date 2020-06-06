@@ -113,7 +113,7 @@ void getQueryRequestParameters(int *queryType, int *searchedSalary, char **searc
     {
         *queryType = QUERY_BY_EXACT_NAME_AND_SALARY_EXACT_HYBRID;
         *searchedString = readConfigurationFile();
-        // *searchedSalary = atoi(readConfigurationFile());
+        //*searchedSalary = atoi(readConfigurationFile());
     }
 }
 void initializeClient(int DBManagerIdReceived, int QueryLoggerIdReceived, int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived, int clientNumberReceived, int DBSharedMemoryIdReceived, int loggerMsgQIdReceived, int LoggerIdReceived, int queryLoggerMsgQIdReceived)

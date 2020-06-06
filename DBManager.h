@@ -10,6 +10,7 @@
 #define IDENTICAL_NAMES 0
 #define FIRST_CHARACTER 0
 #define SALARY_LOWER_LIMIT 0
+#define OUT_OF_RANGE_REQUEST -1000
 long int DBManagerPID;
 struct message receivedMessage;
 struct message sentMessageToClient;
