@@ -18,7 +18,7 @@ void do_DBManager(int sharedMemoryIdReceived, int clientDBManagerMsgQIdReceived,
         }
         else if (messageType == MESSAGE_TYPE_MODIFY)
         {
-            int responseCheck=respondToModify(receivedMessage.key, receivedMessage.modification);
+            int responseCheck=respondToModify(receivedMessage.key, receivedMessage.modification, receivedMessage.callingProcessID);
             if(responseCheck==SUCCESSFUL_MODIFICATION)
             logDBManagerModify(receivedMessage.callingProcessID, receivedMessage.key, receivedMessage.modification);
         }
@@ -51,14 +51,14 @@ int respondToAdd(char *name, int salary, int lastKey)
     DBtable[lastKey + 1] = newRecord;
     return lastKey + 1;
 }
-int respondToModify(int keyOfTheRecordToBeModified, int modificationValue)
+int respondToModify(int keyOfTheRecordToBeModified, int modificationValue, int CallingProcessPID)
 {
     int currentIndex = 0;
     for (; DBtable[currentIndex].key < keyOfTheRecordToBeModified; currentIndex++)
     {
         /*checks that the index to be modified exists*/
     }
-    if (currentIndex == keyOfTheRecordToBeModified && DBsemaphores[currentIndex] == SEMAPHORE_OCCUPIED)
+    if (currentIndex == keyOfTheRecordToBeModified && DBsemaphores[currentIndex] == SEMAPHORE_OCCUPIED && PIDsInSemaphores[keyOfTheRecordToBeModified] == CallingProcessPID)
     {
         DBtable[currentIndex].salary += modificationValue;
         if (DBtable[currentIndex].salary < SALARY_LOWER_LIMIT)
@@ -90,6 +90,7 @@ int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waiti
             callingProcessWaitingBoolean = GRANTED_ACCESS;
             kill(CallingProccessPID, SIGUSR1);
             kill(CallingProccessPID, SIGCONT);
+            PIDsInSemaphores[requiredRecordKey] = CallingProccessPID;
         }
     }
     else
@@ -106,10 +107,12 @@ int respondToRelease(int releasedRecordKey, int CallingProccessPID, struct waiti
     if (releasedProcessPID != NO_PROCESS_WAITING)
     {
         kill(releasedProcessPID, SIGCONT);
+        PIDsInSemaphores[releasedRecordKey] = releasedProcessPID;
     }
     else
     {
         DBsemaphores[releasedRecordKey] = SEMAPHORE_AVAILABLE;
+        PIDsInSemaphores[releasedRecordKey] = NO_PROCESS_IN_SEMAPHORE;
     }
     return releasedProcessPID;
 }
@@ -228,6 +231,7 @@ void initializeDBManager(int messageQueueIdReceived, int sharedMemoryIdReceived,
     DBManagerPID = getpid();
     sharedMemoryId = sharedMemoryIdReceived;
     memset(DBsemaphores, SEMAPHORE_AVAILABLE, MAX_NUMBER_OF_RECORDS);
+    memset(PIDsInSemaphores, NO_PROCESS_IN_SEMAPHORE, MAX_NUMBER_OF_RECORDS);
     DBtable = (struct DBrecord *)shmat(DBSharedMemoryIdReceived, (void *)0, 0);
     loggerMsgQIdDBManager = receivedLoggerMsgQId;
     signal(SIGUSR1, handlingSIGUSR1_and_IgnoringSigStop);

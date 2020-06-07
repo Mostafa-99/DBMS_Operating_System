@@ -13,6 +13,7 @@
 #define OUT_OF_RANGE_REQUEST -1000
 #define SUCCESSFUL_MODIFICATION 1
 #define FAILED_MODIFICATION -1
+#define NO_PROCESS_IN_SEMAPHORE -1
 //----------------------------
 long int DBManagerPID;
 int sharedMemoryId;
@@ -20,6 +21,7 @@ int lastKey= KEY_START -1;
 int LoggerId;
 int loggerMsgQIdDBManager;
 int DBsemaphores [MAX_NUMBER_OF_RECORDS];
+int PIDsInSemaphores [MAX_NUMBER_OF_RECORDS];
 //----------------------------
 struct message receivedMessage;
 struct message sentMessageToClient;
@@ -30,7 +32,7 @@ struct loggerMsgQ messageLoggerDBManager;
 //----------------------------
 void respondToRequests();
 int respondToAdd(char* name, int salary, int lastKey);
-int respondToModify(int keyOfTheRecordToBeModified, int modificationValue);
+int respondToModify(int keyOfTheRecordToBeModified, int modificationValue, int CallingProcessPID);
 int respondToAcquire(int requiredRecordKey, int CallingProccessPID, struct waitingQueue* waitingQueueOfThePassedKey);
 int respondToRelease(int releasedRecordKey, int CallingProccessPID,struct waitingQueue* waitingQueueOfThePassedKey);
 void respondToQuery(int queryType, int searchedSalary, char* searchedName, int CallingProccessPID);

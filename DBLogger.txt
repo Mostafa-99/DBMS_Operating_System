@@ -1,86 +1,86 @@
-1591483240	I am DBManager I added mohamed with salary 20000
-1591483240	I am DBManager I added saad with salary 20000
-1591483240	I am DBManager I added mostafa with salary 20000
-1591483240	I am DBManager I added soaad with salary 20000
-1591483241	I am DBManager I added ahmed with salary 30000
-1591483241	I am DBManager I added saeed with salary 30000
-1591483241	I am DBManager I added may with salary 30000
-1591483241	I am DBManager I added sara with salary 30000
-1591483242	I am DBManager I granted access to 4403 to record of key: 1
-1591483242	I am DBManager I granted access to 4404 to record of key: 3
-1591483242	I am DBManager I added mohamed_4 with salary 20000
-1591483242	I am DBManager I added mohamed_45 with salary 20000
-1591483243	I am DBManager I granted access to 4403 to record of key: 0
-1591483243	I am DBManager I modified record of key: 3 with a value of: 10000
-1591483243	I am DBManager I added ahmed_4 with salary 30000
-1591483243	I am DBManager I added ahmed_45 with salary 30000
-1591483244	I am DBManager I modified record of key: 0 with a value of: 10000
-1591483244	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
-1591483244	I am DBManager I added 4405 to the waiting queue of key: 1
-1591483244	I am DBManager I added 4406 to the waiting queue of key: 1
-1591483245	I am DBManager I modified record of key: 1 with a value of: -20000
-1591483245	I am DBManager I added mohamed_3 with salary 20000
-1591483246	I am DBManager I released record of key: 1 and process 4405 is released from waiting queue
-1591483246	I am DBManager I added ahmed_3 with salary 30000
-1591483247	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
-1591483247	I am DBManager I granted access to 4405 to record of key: 0
-1591483247	I am DBManager I added 4404 to the waiting queue of key: 1
-1591483248	I am DBManager I added 4403 to the waiting queue of key: 1
-1591483248	I am DBManager I modified record of key: 0 with a value of: 10000
-1591483249	I am DBManager I modified record of key: 1 with a value of: -10000
-1591483250	I am DBManager I released record of key: 1 and process 4406 is released from waiting queue
-1591483251	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
-1591483251	I am DBManager I granted access to 4406 to record of key: 0
-1591483252	I am DBManager I granted access to 4405 to record of key: 2
-1591483252	I am DBManager I modified record of key: 0 with a value of: 10000
-1591483253	I am DBManager I modified record of key: 1 with a value of: -10000
-1591483253	I am DBManager I granted access to 4405 to record of key: 3
-1591483254	I am DBManager I released record of key: 1 and process 4404 is released from waiting queue
-1591483254	I am DBManager I modified record of key: 2 with a value of: 10000
-1591483255	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
-1591483255	I am DBManager I modified record of key: 3 with a value of: -10000
-1591483255	I am DBManager I granted access to 4404 to record of key: 0
-1591483256	I am DBManager I added 4406 to the waiting queue of key: 2
-1591483256	I am DBManager I released record of key: 2 and process 4406 is released from waiting queue
-1591483256	I am DBManager I modified record of key: 0 with a value of: 10000
-1591483257	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
-1591483257	I am DBManager I granted access to 4406 to record of key: 3
-1591483257	I am DBManager I modified record of key: 1 with a value of: -10000
-1591483258	I am DBManager I returned a query by full table
-1591483258	I am DBManager I modified record of key: 2 with a value of: 10000
-1591483258	I am DBManager I released record of key: 1 and process 4403 is released from waiting queue
-1591483259	I am DBManager I returned a query by part of name: m
-1591483259	I am DBManager I modified record of key: 3 with a value of: -10000
-1591483259	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
-1591483259	I am DBManager I granted access to 4403 to record of key: 0
-1591483260	I am DBManager I returned a query by exact name: ahmed
-1591483260	I am DBManager I released record of key: 2 and waiting queue of this key is now empty
-1591483260	I am DBManager I granted access to 4404 to record of key: 2
-1591483260	I am DBManager I modified record of key: 0 with a value of: 20000
-1591483261	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
-1591483261	I am DBManager I granted access to 4404 to record of key: 3
-1591483261	I am DBManager I modified record of key: 1 with a value of: -10000
-1591483262	I am DBManager I returned a query by part of name: so
-1591483262	I am DBManager I modified record of key: 2 with a value of: 10000
-1591483262	I am DBManager I released record of key: 1 and waiting queue of this key is now empty
-1591483263	I am DBManager I returned a query by exact name: mohamed_45
-1591483263	I am DBManager I modified record of key: 3 with a value of: -10000
-1591483263	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
-1591483264	I am DBManager I released record of key: 2 and waiting queue of this key is now empty
-1591483264	I am DBManager I returned a query by full table
-1591483265	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
-1591483265	I am DBManager I returned a query by exact salary: 20000
-1591483266	I am DBManager I returned a query by full table
-1591483266	I am DBManager I returned a query by greater than salary: 20000
-1591483267	I am DBManager I returned a query by part of name: mo
-1591483267	I am DBManager I returned a query by less than salary: 20000
-1591483268	I am DBManager I returned a query by exact name: ahmed
-1591483268	I am DBManager I returned a query by greater than or equal salary: 20000
-1591483269	I am DBManager I returned a query by less than or equal salary: 20000
-1591483270	I am DBManager I returned a query by exact name: ahmed and exact salary: 30000
-1591483271	I am DBManager I granted access to 4403 to record of key: 1
-1591483272	I am DBManager I granted access to 4403 to record of key: 0
-1591483273	I am DBManager I modified record of key: 0 with a value of: 10000
-1591483274	I am DBManager I modified record of key: 1 with a value of: -20000
-1591483275	I am DBManager I released record of key: 1 and waiting queue of this key is now empty
-1591483276	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
+1591487841	I am DBManager I added mohamed with salary 20000
+1591487841	I am DBManager I added saad with salary 20000
+1591487841	I am DBManager I added soaad with salary 20000
+1591487841	I am DBManager I added mostafa with salary 20000
+1591487842	I am DBManager I added ahmed with salary 30000
+1591487842	I am DBManager I added saeed with salary 30000
+1591487842	I am DBManager I added sara with salary 30000
+1591487842	I am DBManager I added may with salary 30000
+1591487843	I am DBManager I granted access to 20352 to record of key: 1
+1591487843	I am DBManager I granted access to 20353 to record of key: 3
+1591487843	I am DBManager I added mohamed_45 with salary 20000
+1591487843	I am DBManager I added mohamed_4 with salary 20000
+1591487844	I am DBManager I modified record of key: 3 with a value of: 10000
+1591487844	I am DBManager I granted access to 20352 to record of key: 0
+1591487844	I am DBManager I added ahmed_45 with salary 30000
+1591487844	I am DBManager I added ahmed_4 with salary 30000
+1591487845	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
+1591487845	I am DBManager I modified record of key: 0 with a value of: 10000
+1591487845	I am DBManager I added 20355 to the waiting queue of key: 1
+1591487845	I am DBManager I added 20354 to the waiting queue of key: 1
+1591487846	I am DBManager I added mohamed_3 with salary 20000
+1591487846	I am DBManager I modified record of key: 1 with a value of: -20000
+1591487847	I am DBManager I added ahmed_3 with salary 30000
+1591487847	I am DBManager I released record of key: 1 and process 20355 is released from waiting queue
+1591487848	I am DBManager I added 20353 to the waiting queue of key: 1
+1591487848	I am DBManager I added 20355 to the waiting queue of key: 0
+1591487848	I am DBManager I released record of key: 0 and process 20355 is released from waiting queue
+1591487849	I am DBManager I modified record of key: 0 with a value of: 10000
+1591487849	I am DBManager I added 20352 to the waiting queue of key: 1
+1591487850	I am DBManager I modified record of key: 1 with a value of: -10000
+1591487851	I am DBManager I released record of key: 1 and process 20354 is released from waiting queue
+1591487852	I am DBManager I added 20354 to the waiting queue of key: 0
+1591487852	I am DBManager I released record of key: 0 and process 20354 is released from waiting queue
+1591487853	I am DBManager I modified record of key: 0 with a value of: 10000
+1591487853	I am DBManager I granted access to 20355 to record of key: 2
+1591487854	I am DBManager I modified record of key: 1 with a value of: -10000
+1591487854	I am DBManager I granted access to 20355 to record of key: 3
+1591487855	I am DBManager I released record of key: 1 and process 20353 is released from waiting queue
+1591487855	I am DBManager I modified record of key: 2 with a value of: 10000
+1591487856	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
+1591487856	I am DBManager I granted access to 20353 to record of key: 0
+1591487856	I am DBManager I modified record of key: 3 with a value of: -10000
+1591487857	I am DBManager I added 20354 to the waiting queue of key: 2
+1591487857	I am DBManager I modified record of key: 0 with a value of: 10000
+1591487857	I am DBManager I released record of key: 2 and process 20354 is released from waiting queue
+1591487858	I am DBManager I modified record of key: 1 with a value of: -10000
+1591487858	I am DBManager I added 20354 to the waiting queue of key: 3
+1591487858	I am DBManager I released record of key: 3 and process 20354 is released from waiting queue
+1591487859	I am DBManager I released record of key: 1 and process 20352 is released from waiting queue
+1591487859	I am DBManager I returned a query by part of name: so
+1591487859	I am DBManager I modified record of key: 2 with a value of: 10000
+1591487860	I am DBManager I added 20352 to the waiting queue of key: 0
+1591487860	I am DBManager I released record of key: 0 and process 20352 is released from waiting queue
+1591487860	I am DBManager I returned a query by exact name: mohamed_45
+1591487860	I am DBManager I modified record of key: 3 with a value of: -10000
+1591487861	I am DBManager I added 20353 to the waiting queue of key: 2
+1591487861	I am DBManager I modified record of key: 0 with a value of: 20000
+1591487861	I am DBManager I released record of key: 2 and process 20353 is released from waiting queue
+1591487862	I am DBManager I modified record of key: 1 with a value of: -10000
+1591487862	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
+1591487862	I am DBManager I granted access to 20353 to record of key: 3
+1591487863	I am DBManager I released record of key: 1 and waiting queue of this key is now empty
+1591487863	I am DBManager I returned a query by full table
+1591487863	I am DBManager I modified record of key: 2 with a value of: 10000
+1591487864	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
+1591487864	I am DBManager I modified record of key: 3 with a value of: -10000
+1591487864	I am DBManager I returned a query by part of name: m
+1591487865	I am DBManager I returned a query by full table
+1591487865	I am DBManager I released record of key: 2 and waiting queue of this key is now empty
+1591487865	I am DBManager I returned a query by exact name: ahmed
+1591487866	I am DBManager I returned a query by exact salary: 20000
+1591487866	I am DBManager I released record of key: 3 and waiting queue of this key is now empty
+1591487867	I am DBManager I returned a query by greater than salary: 20000
+1591487867	I am DBManager I returned a query by full table
+1591487868	I am DBManager I returned a query by less than salary: 20000
+1591487868	I am DBManager I returned a query by part of name: mo
+1591487869	I am DBManager I returned a query by greater than or equal salary: 20000
+1591487869	I am DBManager I returned a query by exact name: ahmed
+1591487870	I am DBManager I returned a query by less than or equal salary: 20000
+1591487871	I am DBManager I returned a query by exact name: ahmed and exact salary: 30000
+1591487872	I am DBManager I granted access to 20352 to record of key: 1
+1591487873	I am DBManager I granted access to 20352 to record of key: 0
+1591487874	I am DBManager I modified record of key: 0 with a value of: 10000
+1591487875	I am DBManager I modified record of key: 1 with a value of: -20000
+1591487876	I am DBManager I released record of key: 1 and waiting queue of this key is now empty
+1591487877	I am DBManager I released record of key: 0 and waiting queue of this key is now empty
